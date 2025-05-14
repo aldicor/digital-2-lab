@@ -1,0 +1,12 @@
+Time resolution is 1 ps
+Tiempo:                    0ns | Estado: RRADO | Contador:  0 | Salidas: Abierta=0, Cerrada=1, Movimiento=0
+Iniciando prueba: Apertura y cierre completo
+Tiempo:               115000ns | Estado: IENDO | Contador:  0 | Salidas: Abierta=0, Cerrada=0, Movimiento=1
+Tiempo:               205000ns | Estado: IENDO | Contador:  1 | Salidas: Abierta=0, Cerrada=0, Movimiento=1
+Tiempo:               305000ns | Estado: IENDO | Contador:  2 | Salidas: Abierta=0, Cerrada=0, Movimiento=1
+Tiempo:               405000ns | Estado: IENDO | Contador:  3 | Salidas: Abierta=0, Cerrada=0, Movimiento=1
+Tiempo:               505000ns | Estado: IENDO | Contador:  4 | Salidas: Abierta=0, Cerrada=0, Movimiento=1
+Tiempo:               605000ns | Estado: IENDO | Contador:  5 | Salidas: Abierta=0, Cerrada=0, Movimiento=1
+Tiempo:               705000ns | Estado: IENDO | Contador:  6 | Salidas: Abierta=0, Cerrada=0, Movimiento=1
+Tiempo:               805000ns | Estado: IENDO | Contador:  7 | Salidas: Abierta=0, Cerrada=0, Movimiento=1
+Tiempo:               905000ns | Estado: IENDO | Contador:  8 | Salidas: Abierta=0, Cerrada=0, Movimiento=1
