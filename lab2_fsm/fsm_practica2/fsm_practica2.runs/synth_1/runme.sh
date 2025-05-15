@@ -12,9 +12,9 @@ echo "Please update the PATH and LD_LIBRARY_PATH variables below, before executi
 exit
 
 if [ -z "$PATH" ]; then
-  PATH=D:/programas/Vitis/2024.2/bin;D:/programas/Vivado/2024.2/ids_lite/ISE/bin/nt64;D:/programas/Vivado/2024.2/ids_lite/ISE/lib/nt64:D:/programas/Vivado/2024.2/bin
+  PATH=D:/Vitis/2024.2/bin;D:/Vivado/2024.2/ids_lite/ISE/bin/nt64;D:/Vivado/2024.2/ids_lite/ISE/lib/nt64:D:/Vivado/2024.2/bin
 else
-  PATH=D:/programas/Vitis/2024.2/bin;D:/programas/Vivado/2024.2/ids_lite/ISE/bin/nt64;D:/programas/Vivado/2024.2/ids_lite/ISE/lib/nt64:D:/programas/Vivado/2024.2/bin:$PATH
+  PATH=D:/Vitis/2024.2/bin;D:/Vivado/2024.2/ids_lite/ISE/bin/nt64;D:/Vivado/2024.2/ids_lite/ISE/lib/nt64:D:/Vivado/2024.2/bin:$PATH
 fi
 export PATH
 
@@ -25,7 +25,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='D:/Ing electronica - unal/7_semestre/digital_electronics_2/digital-2-lab/lab2_fsm/fsm_practica2/fsm_practica2.runs/synth_1'
+HD_PWD='C:/Users/Usuario/Desktop/UNAL/2025-1/Electrnica Digital II/digital-2-lab/lab2_fsm/fsm_practica2/fsm_practica2.runs/synth_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log

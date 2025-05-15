@@ -50,7 +50,7 @@ module control(
             end
 
             ABIERTO: begin
-                if (contador >= 14)
+                if (sensor_salida || contador >= 14)
                     estado_siguiente = CERRANDO;
                 else
                     estado_siguiente = ABIERTO;
