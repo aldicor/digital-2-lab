@@ -6,12 +6,4 @@ Using 2 slave threads.
 Starting static elaboration
 Pass Through NonSizing Optimizer
 Completed static elaboration
-Starting simulation data flow analysis
-WARNING: [XSIM 43-4099] "D:/Ing electronica - unal/7_semestre/digital_electronics_2/project_1/project_1.srcs/sources_1/new/and_gate.v" Line 1. Module and_gate doesn't have a timescale but at least one module in design has a timescale.
-WARNING: [XSIM 43-4099] "D:/Ing electronica - unal/7_semestre/digital_electronics_2/project_1/project_1.srcs/sources_1/new/and_gate.v" Line 1. Module and_gate doesn't have a timescale but at least one module in design has a timescale.
-Completed simulation data flow analysis
-Time Resolution for simulation is 1ps
-Compiling module xil_defaultlib.and_gate
-Compiling module xil_defaultlib.and_gate_tb
-Compiling module xil_defaultlib.glbl
-Built simulation snapshot and_gate_tb_behav
+INFO: [XSIM 43-4323] No Change in HDL. Linking previously generated obj files to create kernel

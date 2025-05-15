@@ -2,6 +2,8 @@
 2020.2
 Nov  8 2024
 22:36:57
-C:/Users/Usuario/Desktop/UNAL/2025-1/Electrnica Digital II/fsm_practica2/fsm_practica2.sim/sim_1/behav/xsim/glbl.v,1724786425,verilog,,,,glbl,,,,,,,,
-C:/Users/Usuario/Desktop/UNAL/2025-1/Electrnica Digital II/fsm_practica2/fsm_practica2.srcs/sim_1/new/fsm_tb.v,1747113954,verilog,,,,control_tb,,,,,,,,
-C:/Users/Usuario/Desktop/UNAL/2025-1/Electrnica Digital II/fsm_practica2/fsm_practica2.srcs/sources_1/new/fsm.v,1747114137,verilog,,C:/Users/Usuario/Desktop/UNAL/2025-1/Electrnica Digital II/fsm_practica2/fsm_practica2.srcs/sim_1/new/fsm_tb.v,,control,,,,,,,,
+D:/Ing electronica - unal/7_semestre/digital_electronics_2/digital-2-lab/lab2_fsm/fsm_practica2/fsm_practica2.sim/sim_1/behav/xsim/glbl.v,1747275566,verilog,,,,glbl,,,,,,,,
+D:/Ing electronica - unal/7_semestre/digital_electronics_2/digital-2-lab/lab2_fsm/fsm_practica2/fsm_practica2.srcs/sim_1/new/fsm_tb.v,1747281471,verilog,,,,control_tb,,,,,,,,
+D:/Ing electronica - unal/7_semestre/digital_electronics_2/digital-2-lab/lab2_fsm/fsm_practica2/fsm_practica2.srcs/sources_1/new/clock_divider.v,1747276542,verilog,,D:/Ing electronica - unal/7_semestre/digital_electronics_2/digital-2-lab/lab2_fsm/fsm_practica2/fsm_practica2.srcs/sources_1/new/fsm.v,,clockdiv,,,,,,,,
+D:/Ing electronica - unal/7_semestre/digital_electronics_2/digital-2-lab/lab2_fsm/fsm_practica2/fsm_practica2.srcs/sources_1/new/fsm.v,1747280922,verilog,,D:/Ing electronica - unal/7_semestre/digital_electronics_2/digital-2-lab/lab2_fsm/fsm_practica2/fsm_practica2.srcs/sim_1/new/fsm_tb.v,,control,,,,,,,,
+D:/Ing electronica - unal/7_semestre/digital_electronics_2/digital-2-lab/lab2_fsm/fsm_practica2/fsm_practica2.srcs/sources_1/new/top.v,1747277867,verilog,,,,top,,,,,,,,

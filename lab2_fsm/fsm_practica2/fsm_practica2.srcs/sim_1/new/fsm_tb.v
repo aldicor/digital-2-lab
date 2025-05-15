@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+`timescale 1ps / 1ps
 
 module control_tb;
     // Inputs
@@ -25,20 +25,10 @@ module control_tb;
     
     // Clock generation
     always begin
-        #5 clk = ~clk; // 10ns period (100MHz)
+        # 5 clk = ~clk; // 10ns period (100MHz)
     end
     
-    // State monitoring
-    reg [39:0] estado_actual;
-    always @(*) begin
-        case (uut.estado_actual)
-            2'b00: estado_actual = "CERRADO";
-            2'b01: estado_actual = "ABRIENDO";
-            2'b10: estado_actual = "ABIERTO";
-            2'b11: estado_actual = "CERRANDO";
-            default: estado_actual = "UNKNOWN";
-        endcase
-    end
+
     
     initial begin
         // Initialize Inputs
@@ -48,53 +38,45 @@ module control_tb;
         sensor_salida = 0;
         
         // Wait 100ns for global reset to finish
-        #100;
+        #10;
         reset = 0;
         
         // Test scenario 1: Apertura completa y luego cierre por timeout
-        $display("Iniciando prueba: Apertura y cierre completo");
         
         // Activar sensor de entrada (inicia apertura)
         #10 sensor_entrada = 1;
         #10 sensor_entrada = 0;
         
         // Esperar apertura completa (10 ciclos de 1Hz)
-        #1000; // 1000ns = 100 ciclos de reloj (10 ciclos de 1Hz)
+        #100;
         
         // La puerta debería estar abierta ahora
         // Esperar timeout de 15 segundos (1500ns en nuestra escala)
-        #1500;
+        #150;
         
         // La puerta debería estar cerrando ahora
         // Esperar cierre completo (10 ciclos de 1Hz)
-        #1000;
+        #100;
         
         // Test scenario 2: Apertura y cierre por sensor de salida
-        $display("\nIniciando prueba: Apertura y cierre por sensor de salida");
         
         // Activar sensor de entrada (inicia apertura)
-        #10 sensor_entrada = 1;
-        #10 sensor_entrada = 0;
+        #100 sensor_entrada = 1;
+        #100 sensor_entrada = 0;
         
         // Esperar apertura completa
-        #1000;
+        #100;
         
         // Activar sensor de salida (debería iniciar cierre)
         #10 sensor_salida = 1;
         #10 sensor_salida = 0;
         
         // Esperar cierre completo
-        #1000;
-        
-        // Finalizar simulación
-        $display("\nPruebas completadas");
-        $finish;
+        #100;
+        end
+        // Finalizar simulació
+    initial begin: TEST_CASE
+        #10000 $finish;
     end
     
-    // Monitor para mostrar la actividad
-    initial begin
-        $monitor("Tiempo: %tns | Estado: %s | Contador: %d | Salidas: Abierta=%b, Cerrada=%b, Movimiento=%b", 
-                 $time, estado_actual, uut.contador, 
-                 puerta_abierta, puerta_cerrada, puerta_movimiento);
-    end
 endmodule

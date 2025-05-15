@@ -8,10 +8,6 @@ module control(
     output reg puerta_movimiento
 );
 
-    // Se usará para generar una señal de 1Hz que servirá para contar los segundos.
-    //el clk es de 125_000_000 pero voy a dejarlo en 10 para mirar bien el testbench
-    localparam CICLOS_1HZ = 10;
-
     // Estados de la FSM
     localparam CERRADO  = 2'b00,
                ABRIENDO = 2'b01,
@@ -19,23 +15,6 @@ module control(
                CERRANDO = 2'b11;
 
     reg [1:0] estado_actual, estado_siguiente;
-
-    // Registros divisor de frecuencia
-    reg [26:0] div_counter = 0;
-    reg tiempo_1Hz = 0;
-
-    always @(posedge clk or posedge reset) begin
-        if (reset) begin
-            div_counter <= 0;
-            tiempo_1Hz <= 0;
-        end else if (div_counter == CICLOS_1HZ - 1) begin
-            div_counter <= 0;
-            tiempo_1Hz <= 1;
-        end else begin
-            div_counter <= div_counter + 1;
-            tiempo_1Hz <= 0;
-        end
-    end
 
     // Contador de segundos
     reg [4:0] contador; // Hasta 15 segundos
@@ -46,15 +25,11 @@ module control(
             estado_actual <= CERRADO;
             contador <= 0;
         end else begin
-            estado_actual <= estado_siguiente;
-
-            if (tiempo_1Hz) begin
-                case (estado_actual)
-                    ABRIENDO, ABIERTO, CERRANDO: contador <= contador + 1;
-                    default: contador <= 0;
-                endcase
-            end
-        end
+            if(estado_actual != estado_siguiente) begin
+                estado_actual <= estado_siguiente;
+                contador <= 0;    
+            end else contador <= contador + 1;
+        end 
     end
 
     // Lógica de transición de estados fsm
@@ -75,14 +50,14 @@ module control(
             end
 
             ABIERTO: begin
-                if (sensor_salida || contador >= 15)
+                if (contador >= 14)
                     estado_siguiente = CERRANDO;
                 else
                     estado_siguiente = ABIERTO;
             end
 
             CERRANDO: begin
-                if (contador >= 10)
+                if (contador >= 9)
                     estado_siguiente = CERRADO;
                 else
                     estado_siguiente = CERRANDO;
@@ -94,15 +69,34 @@ module control(
 
     // Salidas según estado actual
     always @(*) begin
-        puerta_abierta = 0;
-        puerta_cerrada = 0;
-        puerta_movimiento = 0;
-
         case (estado_actual)
-            CERRADO:   puerta_cerrada = 1;
-            ABRIENDO,
-            CERRANDO:  puerta_movimiento = 1;
-            ABIERTO:   puerta_abierta = 1;
+            CERRADO: begin  
+                puerta_abierta = 0;
+                puerta_cerrada = 1;
+                puerta_movimiento = 0;
+            end
+            ABRIENDO: begin
+                puerta_abierta = 0;
+                puerta_cerrada = 0;
+                puerta_movimiento = 1;
+            end
+            CERRANDO: begin
+                puerta_abierta = 0;
+                puerta_cerrada = 0;
+                puerta_movimiento = 1;
+            
+            end  
+            ABIERTO: begin
+                puerta_abierta = 1;
+                puerta_cerrada = 0;
+                puerta_movimiento = 0;
+            
+            end    
+            default: begin 
+                puerta_abierta = 0;
+                puerta_cerrada = 0;
+                puerta_movimiento = 0;
+            end            
         endcase
     end
 
