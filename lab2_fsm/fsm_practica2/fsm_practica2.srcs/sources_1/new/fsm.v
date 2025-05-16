@@ -43,7 +43,7 @@ module control(
             end
 
             ABRIENDO: begin
-                if (contador >= 10)
+                if (contador >= 9)
                     estado_siguiente = ABIERTO;
                 else
                     estado_siguiente = ABRIENDO;
