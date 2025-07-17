@@ -1,0 +1,86 @@
+// main.c
+#include "funcionesSensor.h"
+#include "xparameters.h"
+#include "xuartps.h"
+#include "sleep.h"
+#include <string.h>
+
+#define UART_SENSOR_ID XPAR_XUARTPS_0_DEVICE_ID  // UART0 ↔ AS608
+#define UART_PC_ID     XPAR_XUARTPS_1_DEVICE_ID  // UART1 ↔ PC
+
+int main() {
+    XUartPs uart_sens, uart_pc;
+    XUartPs_Config *cfg;
+    Adafruit_Fingerprint finger;
+    char buf[64];
+    int len;
+    uint8_t res;
+
+    // — Inicializar UART1 (PC) —
+    cfg = XUartPs_LookupConfig(UART_PC_ID);
+    XUartPs_CfgInitialize(&uart_pc, cfg, cfg->BaseAddress);
+    XUartPs_SetBaudRate(&uart_pc, 115200);
+
+    // — Inicializar UART0 (Sensor) —
+    cfg = XUartPs_LookupConfig(UART_SENSOR_ID);
+    XUartPs_CfgInitialize(&uart_sens, cfg, cfg->BaseAddress);
+    XUartPs_SetBaudRate(&uart_sens, 57600);
+
+    // — Inicializar sensor sobre UART0 —
+    Adafruit_Fingerprint_init(&finger, &uart_sens);
+
+    // — Mensaje de arranque en PC —
+    const char *start = "Sistema listo. Espera huella...\r\n";
+    XUartPs_Send(&uart_pc, (uint8_t*)start, strlen(start));
+
+    while (1) {
+        // 1) Captura de imagen
+        res = getImage(&finger);
+        len = snprintf(buf, sizeof(buf), "getImage() => 0x%02X\r\n", res);
+        XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+
+        if (res == FINGERPRINT_NOFINGER) {
+            XUartPs_Send(&uart_pc, (uint8_t*)"Coloque el dedo...\r\n", 20);
+        }
+        else if (res == FINGERPRINT_OK) {
+            XUartPs_Send(&uart_pc, (uint8_t*)"Imagen OK\r\n", 11);
+
+            // 2) Generar características
+            res = genChar(&finger, 1);
+            len = snprintf(buf, sizeof(buf), "genChar() => 0x%02X\r\n", res);
+            XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+
+            if (res == FINGERPRINT_OK) {
+                XUartPs_Send(&uart_pc, (uint8_t*)"Char OK\r\n", 9);
+
+                // 3) Buscar huella
+                res = fingerFastSearch(&finger, 1, 0, 300);
+                len = snprintf(buf, sizeof(buf), "fingerFastSearch() => 0x%02X\r\n", res);
+                XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+
+                if (res == FINGERPRINT_OK) {
+                    len = snprintf(buf, sizeof(buf),
+                          "Huella reconocida! ID=%d Conf=%d\r\n",
+                          finger.fingerID, finger.confidence);
+                    XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+                } else {
+                    len = snprintf(buf, sizeof(buf),
+                           "No encontrada (0x%02X)\r\n", res);
+                    XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+                }
+            } else {
+                len = snprintf(buf, sizeof(buf),
+                       "Error genChar: 0x%02X\r\n", res);
+                XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+            }
+        } else {
+            len = snprintf(buf, sizeof(buf),
+                   "Error getImage: 0x%02X\r\n", res);
+            XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+        }
+
+        usleep(500000);
+    }
+
+    return 0;
+}

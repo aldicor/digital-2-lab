@@ -1,0 +1,76 @@
+#include "as608.h"
+#include "xuartps.h"
+#include "xparameters.h"
+#include "sleep.h"
+#include <stdarg.h>
+#include <stdio.h>
+
+#define PC_UART_DEVICE_ID XPAR_XUARTPS_1_DEVICE_ID
+static XUartPs UartPrint;
+
+void init_printf_uart() {
+    XUartPs_Config *Config = XUartPs_LookupConfig(PC_UART_DEVICE_ID);
+    XUartPs_CfgInitialize(&UartPrint, Config, Config->BaseAddress);
+    XUartPs_SetBaudRate(&UartPrint, 115200);
+}
+
+void uart_printf(const char *fmt, ...) {
+    char buffer[128];
+    va_list args;
+    va_start(args, fmt);
+    int len = vsnprintf(buffer, sizeof(buffer), fmt, args);
+    va_end(args);
+    if (len > 0) {
+        XUartPs_Send(&UartPrint, (uint8_t *)buffer, len);
+        while (XUartPs_IsSending(&UartPrint));
+    }
+}
+
+int main() {
+    init_printf_uart();
+    AS608_UART_Init();
+
+    uart_printf("🔧 UARTs initialized (UART0 for AS608, UART1 for PC)\r\n");
+
+
+
+    uart_printf("✅ Sensor ready. Place your finger...\r\n");
+
+    while (1) {
+        uint8_t res = AS608_CaptureImage();
+        if (res == AS608_NOFINGER) {
+            uart_printf("👆 No finger detected. Waiting...\r\n");
+            sleep(1);
+            continue;
+        }
+
+        if (res != AS608_OK) {
+            uart_printf("❌ Capture error: 0x%02X\r\n", res);
+            sleep(1);
+            continue;
+        }
+
+        uart_printf("📸 Finger captured!\r\n");
+
+        res = AS608_GenerateTemplate(1);
+        if (res != AS608_OK) {
+            uart_printf("❌ Template error: 0x%02X\r\n", res);
+            continue;
+        }
+
+        uint16_t id, score;
+        res = AS608_SearchFinger(&id, &score);
+
+        if (res == AS608_OK) {
+            uart_printf("✅ Match! ID=%d, Score=%d\r\n", id, score);
+        } else if (res == AS608_NOMATCH) {
+            uart_printf("❌ No match found.\r\n");
+        } else {
+            uart_printf("❌ Search error: 0x%02X\r\n", res);
+        }
+
+        sleep(2);
+    }
+
+    return 0;
+}

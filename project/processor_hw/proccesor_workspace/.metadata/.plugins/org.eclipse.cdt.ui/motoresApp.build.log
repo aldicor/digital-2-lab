@@ -1,0 +1,18 @@
+20:41:28 **** Incremental Build of configuration Debug for project motoresApp ****
+make all 
+make --no-print-directory pre-build
+a9-linaro-pre-build-step
+' '
+make --no-print-directory main-build
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -IC:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/platform/export/platform/sw/platform/standalone_domain/bspinclude/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c:2:10: fatal error: platform.h: No such file or directory
+    2 | #include "platform.h"
+      |          ^~~~~~~~~~~~
+compilation terminated.
+make[1]: *** [src/subdir.mk:23: src/main.o] Error 1
+make: *** [makefile:34: all] Error 2
+
+20:41:28 Build Finished (took 705ms)
+

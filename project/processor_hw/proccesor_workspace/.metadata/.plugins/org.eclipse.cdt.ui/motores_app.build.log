@@ -1,0 +1,33 @@
+20:34:35 **** Incremental Build of configuration Debug for project motores_app ****
+make all 
+make --no-print-directory pre-build
+a9-linaro-pre-build-step
+' '
+make --no-print-directory main-build
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -IC:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/motores/export/motores/sw/motores/standalone_domain/bspinclude/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'init_system':
+../src/main.c:10:25: error: 'XPAR_AXI_GPIO_0_DEVICE_ID' undeclared (first use in this function); did you mean 'XPAR_PS7_GPIO_0_DEVICE_ID'?
+   10 | #define MOTORES_GPIO_ID XPAR_AXI_GPIO_0_DEVICE_ID
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
+../src/main.c:22:36: note: in expansion of macro 'MOTORES_GPIO_ID'
+   22 |     XGpio_Initialize(&GpioMotores, MOTORES_GPIO_ID);
+      |                                    ^~~~~~~~~~~~~~~
+../src/main.c:10:25: note: each undeclared identifier is reported only once for each function it appears in
+   10 | #define MOTORES_GPIO_ID XPAR_AXI_GPIO_0_DEVICE_ID
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
+../src/main.c:22:36: note: in expansion of macro 'MOTORES_GPIO_ID'
+   22 |     XGpio_Initialize(&GpioMotores, MOTORES_GPIO_ID);
+      |                                    ^~~~~~~~~~~~~~~
+../src/main.c:11:25: error: 'XPAR_AXI_GPIO_1_DEVICE_ID' undeclared (first use in this function); did you mean 'XPAR_PS7_GPIO_0_DEVICE_ID'?
+   11 | #define BOTONES_GPIO_ID XPAR_AXI_GPIO_1_DEVICE_ID
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
+../src/main.c:26:36: note: in expansion of macro 'BOTONES_GPIO_ID'
+   26 |     XGpio_Initialize(&GpioBotones, BOTONES_GPIO_ID);
+      |                                    ^~~~~~~~~~~~~~~
+make[1]: *** [src/subdir.mk:23: src/main.o] Error 1
+make: *** [makefile:34: all] Error 2
+
+20:34:35 Build Finished (took 555ms)
+

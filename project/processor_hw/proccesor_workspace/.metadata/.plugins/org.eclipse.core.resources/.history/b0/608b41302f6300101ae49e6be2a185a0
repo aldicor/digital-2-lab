@@ -1,0 +1,101 @@
+// implementacionFuncionesSensor.c  (sin cambios para sensor)
+#include "funcionesSensor.h"
+#include "xuartps.h"
+#include <string.h>
+#include <unistd.h>
+
+#define MAX_PACKET_LEN 128
+
+void Adafruit_Fingerprint_init(Adafruit_Fingerprint *finger, XUartPs *uart_inst) {
+    finger->uart_inst = uart_inst;
+    finger->timeout   = DEFAULTTIMEOUT;
+    finger->fingerID  = 0;
+    finger->confidence= 0;
+}
+
+int writeStructuredPacket(Adafruit_Fingerprint *finger, const uint8_t *data, uint16_t len) {
+    int sent = XUartPs_Send(finger->uart_inst, (uint8_t*)data, len);
+    return (sent == len) ? sent : FINGERPRINT_ERROR_COMMUNICATION;
+}
+
+int getStructuredPacket(Adafruit_Fingerprint *finger, uint8_t *buffer, uint16_t timeout_ms) {
+    int bytes = 0, attempts = timeout_ms;
+    while (attempts-- > 0) {
+        while (XUartPs_IsReceiveData(finger->uart_inst->Config.BaseAddress)) {
+            uint8_t b = XUartPs_RecvByte(finger->uart_inst->Config.BaseAddress);
+            if (bytes < MAX_PACKET_LEN) buffer[bytes++] = b;
+            if (bytes >= 2 && !(buffer[0]==0xEF && buffer[1]==0x01)) {
+                bytes = 0; continue;
+            }
+            if (bytes >= 12) {
+                uint16_t pl = (buffer[7]<<8)|buffer[8];
+                if (bytes >= 9 + pl + 2) {
+                    uint16_t sum=0;
+                    for (int i=6; i<bytes-2; i++) sum+=buffer[i];
+                    uint16_t ck=(buffer[bytes-2]<<8)|buffer[bytes-1];
+                    return (sum==ck) ? bytes : FINGERPRINT_ERROR_CHECKSUM;
+                }
+            }
+        }
+        usleep(1000);
+    }
+    return FINGERPRINT_ERROR_TIMEOUT;
+}
+
+uint8_t getImage(Adafruit_Fingerprint *finger) {
+    uint8_t cmd[] = {
+        0xEF,0x01,
+        0xFF,0xFF,0xFF,0xFF,
+        FINGERPRINT_COMMANDPACKET,
+        0x00,0x03,
+        FINGERPRINT_GETIMAGE
+    };
+    if (writeStructuredPacket(finger, cmd, sizeof(cmd)) < 0)
+        return FINGERPRINT_ERROR_COMMUNICATION;
+
+    uint8_t resp[MAX_PACKET_LEN];
+    int r = getStructuredPacket(finger, resp, finger->timeout);
+    if (r < 0) return (r==FINGERPRINT_ERROR_TIMEOUT)
+                    ? FINGERPRINT_ERROR_TIMEOUT
+                    : FINGERPRINT_ERROR_COMMUNICATION;
+    if (resp[6] != FINGERPRINT_ACKPACKET) return FINGERPRINT_ERROR_COMMUNICATION;
+    return resp[9];
+}
+
+uint8_t genChar(Adafruit_Fingerprint *finger, uint8_t slot) {
+    uint8_t cmd[] = {
+        0xEF,0x01,
+        0xFF,0xFF,0xFF,0xFF,
+        FINGERPRINT_COMMANDPACKET,
+        0x00,0x04,
+        FINGERPRINT_IMAGE2TZ, slot
+    };
+    if (writeStructuredPacket(finger, cmd, sizeof(cmd)) < 0)
+        return FINGERPRINT_ERROR_COMMUNICATION;
+    uint8_t resp[MAX_PACKET_LEN];
+    int r = getStructuredPacket(finger, resp, finger->timeout);
+    return (r < 0) ? FINGERPRINT_ERROR_COMMUNICATION : resp[9];
+}
+
+uint8_t fingerFastSearch(Adafruit_Fingerprint *finger,
+                         uint8_t slot, uint16_t startPage, uint16_t pageNum) {
+    uint8_t cmd[] = {
+        0xEF,0x01,
+        0xFF,0xFF,0xFF,0xFF,
+        FINGERPRINT_COMMANDPACKET,
+        0x00,0x08,
+        FINGERPRINT_SEARCH, slot,
+        (startPage>>8)&0xFF, startPage&0xFF,
+        (pageNum>>8)&0xFF, pageNum&0xFF
+    };
+    if (writeStructuredPacket(finger, cmd, sizeof(cmd)) < 0)
+        return FINGERPRINT_ERROR_COMMUNICATION;
+    uint8_t resp[MAX_PACKET_LEN];
+    int r = getStructuredPacket(finger, resp, finger->timeout);
+    if (r < 0) return FINGERPRINT_ERROR_COMMUNICATION;
+    if (resp[9] != FINGERPRINT_OK) return resp[9];
+    finger->fingerID   = (resp[10]<<8)|resp[11];
+    finger->confidence = (resp[12]<<8)|resp[13];
+    return FINGERPRINT_OK;
+}
+

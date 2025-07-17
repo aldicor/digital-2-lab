@@ -1,0 +1,14 @@
+#-----------------------------------------------------------
+# Vivado v2023.1 (64-bit)
+# SW Build 3865809 on Sun May  7 15:05:29 MDT 2023
+# IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+# SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+# Start of session at: Wed Jul 16 19:23:20 2025
+# Process ID: 17788
+# Current directory: C:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/processor_hw.runs/zynq_ejemplo_axi_gpio_0_0_synth_1
+# Command line: vivado.exe -log zynq_ejemplo_axi_gpio_0_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source zynq_ejemplo_axi_gpio_0_0.tcl
+# Log file: C:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/processor_hw.runs/zynq_ejemplo_axi_gpio_0_0_synth_1/zynq_ejemplo_axi_gpio_0_0.vds
+# Journal file: C:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/processor_hw.runs/zynq_ejemplo_axi_gpio_0_0_synth_1\vivado.jou
+# Running On: DESKTOP-Q4LM6HA, OS: Windows, CPU Frequency: 1498 MHz, CPU Physical cores: 4, Host memory: 12670 MB
+#-----------------------------------------------------------
+source zynq_ejemplo_axi_gpio_0_0.tcl -notrace

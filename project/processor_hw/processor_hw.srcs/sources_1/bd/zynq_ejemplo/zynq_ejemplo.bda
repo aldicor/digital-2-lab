@@ -217,7 +217,7 @@
                 "MI": "M_AXI_GP0",
                 "MS": "SEG_axi_gpio_0_Reg",
                 "MV": "xilinx.com:ip:processing_system7:5.5",
-                "SX": "/axi_gpio_0",
+                "SX": "/axi_gpio_motores",
                 "SI": "S_AXI",
                 "SS": "Reg",
                 "SV": "xilinx.com:ip:axi_gpio:2.0",

@@ -1,0 +1,46 @@
+#include "xparameters.h"
+#include "xuartps.h"
+#include "xgpio.h"
+#include "sleep.h"
+
+#define UART_DEVICE_ID XPAR_XUARTPS_1_DEVICE_ID
+#define GPIO_DEVICE_ID XPAR_PS7_GPIO_0_DEVICE_ID
+
+int main() {
+    XUartPs uart;
+    XUartPs_Config *uart_cfg;
+    XGpio gpio;
+
+    // Inicializar UART1
+    uart_cfg = XUartPs_LookupConfig(UART_DEVICE_ID);
+    XUartPs_CfgInitialize(&uart, uart_cfg, uart_cfg->BaseAddress);
+    XUartPs_SetBaudRate(&uart, 57600);
+
+    // Inicializar GPIO
+    XGpio_Initialize(&gpio, GPIO_DEVICE_ID);
+    XGpio_SetDataDirection(&gpio, 1, 0x0); // Canal 1 como salida
+
+    // Mensaje inicial manual (sin xil_printf)
+    const char *msg = "Sistema iniciado. Escribe un carácter:\r\n";
+    XUartPs_Send(&uart, (uint8_t *)msg, strlen(msg));
+
+    while (1) {
+        if (XUartPs_IsReceiveData(uart_cfg->BaseAddress)) {
+            uint8_t c;
+            XUartPs_Recv(&uart, &c, 1);
+
+            // Echo de vuelta
+            XUartPs_Send(&uart, &c, 1);
+
+            // Encender motor si se recibe '1', apagar si '0'
+            if (c == '1') {
+                XGpio_DiscreteWrite(&gpio, 1, 1);
+            } else if (c == '0') {
+                XGpio_DiscreteWrite(&gpio, 1, 0);
+            }
+        }
+    }
+
+    return 0;
+}
+

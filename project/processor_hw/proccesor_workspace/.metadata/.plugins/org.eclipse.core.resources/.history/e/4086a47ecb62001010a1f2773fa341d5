@@ -1,0 +1,73 @@
+#include "funcionesSensor.h"
+#include <stdio.h>
+#include <string.h>
+#include "xuartps.h"
+#include "xparameters.h"
+#include "xgpio.h"
+#include "sleep.h"
+
+// Usamos UART1 para comunicarnos con el PC
+#define UART_DEVICE_ID XPAR_XUARTPS_1_DEVICE_ID
+
+int main() {
+    XUartPs uart;
+    XUartPs_Config *uart_cfg;
+    char buf[80];
+    int len;
+
+    // --- Inicialización UART1 ---
+    uart_cfg = XUartPs_LookupConfig(UART_DEVICE_ID);
+    XUartPs_CfgInitialize(&uart, uart_cfg, uart_cfg->BaseAddress);
+    XUartPs_SetBaudRate(&uart, 57600);
+
+    // Inicializamos el sensor sobre esa UART
+    Adafruit_Fingerprint finger;
+    Adafruit_Fingerprint_init(&finger, &uart);
+
+    // Mensaje de arranque
+    const char *start = "INICIO: sensor listo\r\n";
+    XUartPs_Send(&uart, (uint8_t*)start, strlen(start));
+
+    while (1) {
+        // 1) Intentar capturar imagen
+        uint8_t result = getImage(&finger);
+
+        // 2) Según resultado, enviar mensaje por UART1
+        if (result == FINGERPRINT_NOFINGER) {
+            len = snprintf(buf, sizeof(buf), "Coloque el dedo...\r\n");
+            XUartPs_Send(&uart, (uint8_t*)buf, len);
+        }
+        else if (result == FINGERPRINT_OK) {
+            XUartPs_Send(&uart, (uint8_t*)"Imagen capturada\r\n", 18);
+
+            result = genChar(&finger, 1);
+            if (result == FINGERPRINT_OK) {
+                XUartPs_Send(&uart, (uint8_t*)"Caracteristica generada\r\n", 25);
+
+                result = fingerFastSearch(&finger, 1, 0, 300);
+                if (result == FINGERPRINT_OK) {
+                    len = snprintf(buf, sizeof(buf),
+                        "Huella encontrada! ID:%d Conf:%d\r\n",
+                        finger.fingerID, finger.confidence);
+                    XUartPs_Send(&uart, (uint8_t*)buf, len);
+                } else {
+                    len = snprintf(buf, sizeof(buf),
+                        "Error en busqueda: 0x%02X\r\n", result);
+                    XUartPs_Send(&uart, (uint8_t*)buf, len);
+                }
+            } else {
+                len = snprintf(buf, sizeof(buf),
+                    "Error en genChar: 0x%02X\r\n", result);
+                XUartPs_Send(&uart, (uint8_t*)buf, len);
+            }
+        } else {
+            len = snprintf(buf, sizeof(buf),
+                "Error en getImage: 0x%02X\r\n", result);
+            XUartPs_Send(&uart, (uint8_t*)buf, len);
+        }
+
+        usleep(500000);
+    }
+
+    return 0;
+}
