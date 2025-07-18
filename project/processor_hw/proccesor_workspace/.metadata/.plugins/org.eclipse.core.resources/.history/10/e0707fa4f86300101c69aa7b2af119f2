@@ -1,0 +1,23 @@
+#include "xparameters.h"
+#include "xuartps.h"
+#include "sleep.h"
+
+#define UART_DEVICE_ID XPAR_XUARTPS_0_DEVICE_ID  // Cambia a 0 si usas UART0
+
+int main() {
+    XUartPs uart;
+    XUartPs_Config *cfg;
+
+    cfg = XUartPs_LookupConfig(UART_DEVICE_ID);
+    XUartPs_CfgInitialize(&uart, cfg, cfg->BaseAddress);
+    XUartPs_SetBaudRate(&uart, 115200);
+
+    const char *msg = "Hola desde FPGA!\r\n";
+
+    while (1) {
+        XUartPs_Send(&uart, (uint8_t *)msg, strlen(msg));
+        usleep(1000); // Espera 1 segundo
+    }
+
+    return 0;
+}

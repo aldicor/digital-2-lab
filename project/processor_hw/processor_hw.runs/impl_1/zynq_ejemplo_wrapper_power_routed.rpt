@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2023.1 (win64) Build 3865809 Sun May  7 15:05:29 MDT 2023
-| Date             : Wed Jul 16 19:56:12 2025
+| Date             : Fri Jul 18 11:33:57 2025
 | Host             : DESKTOP-Q4LM6HA running 64-bit major release  (build 9200)
 | Command          : report_power -file zynq_ejemplo_wrapper_power_routed.rpt -pb zynq_ejemplo_wrapper_power_summary_routed.pb -rpx zynq_ejemplo_wrapper_power_routed.rpx
 | Design           : zynq_ejemplo_wrapper
@@ -30,7 +30,7 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 1.527        |
+| Total On-Chip Power (W)  | 1.526        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
 | Dynamic (W)              | 1.406        |
@@ -53,18 +53,18 @@ Table of Contents
 | On-Chip                 | Power (W) | Used     | Available | Utilization (%) |
 +-------------------------+-----------+----------+-----------+-----------------+
 | Clocks                  |     0.003 |        3 |       --- |             --- |
-| Slice Logic             |     0.001 |     3310 |       --- |             --- |
-|   LUT as Logic          |     0.001 |     1123 |     17600 |            6.38 |
-|   Register              |    <0.001 |     1504 |     35200 |            4.27 |
+| Slice Logic             |    <0.001 |     3302 |       --- |             --- |
+|   LUT as Logic          |    <0.001 |     1121 |     17600 |            6.37 |
+|   Register              |    <0.001 |     1500 |     35200 |            4.26 |
 |   CARRY4                |    <0.001 |       51 |      4400 |            1.16 |
 |   LUT as Shift Register |    <0.001 |       71 |      6000 |            1.18 |
 |   Others                |     0.000 |      240 |       --- |             --- |
-| Signals                 |     0.002 |     2457 |       --- |             --- |
-| Block RAM               |    <0.001 |        2 |        60 |            3.33 |
+| Signals                 |     0.001 |     2454 |       --- |             --- |
+| Block RAM               |     0.001 |        2 |        60 |            3.33 |
 | I/O                     |    <0.001 |        5 |       100 |            5.00 |
 | PS7                     |     1.399 |        1 |       --- |             --- |
 | Static Power            |     0.121 |          |           |                 |
-| Total                   |     1.527 |          |           |                 |
+| Total                   |     1.526 |          |           |                 |
 +-------------------------+-----------+----------+-----------+-----------------+
 
 
@@ -155,6 +155,8 @@ Table of Contents
 |     axi_interconnect_0   |     0.004 |
 |       m00_couplers       |     0.002 |
 |       xbar               |     0.002 |
+|     blk_mem_gen_0        |     0.001 |
+|       U0                 |     0.001 |
 |     processing_system7_0 |     1.399 |
 |       inst               |     1.399 |
 +--------------------------+-----------+

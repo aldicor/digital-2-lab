@@ -1,0 +1,55 @@
+while (1) {
+    uint8_t res = getImage(&finger);
+    usleep(1000);  // 🔍 Separar comando getImage()
+
+    len = snprintf(buf, sizeof(buf), "getImage() => 0x%02X\r\n", res);
+    XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+    usleep(1000);  // 🔍 Separar logs de la consola
+
+    if (res == FINGERPRINT_NOFINGER) {
+        XUartPs_Send(&uart_pc, (uint8_t*)"Coloque el dedo...\r\n", 20);
+        usleep(1000);  // 🔍 Ver respuesta consola
+    }
+    else if (res == FINGERPRINT_OK) {
+        XUartPs_Send(&uart_pc, (uint8_t*)"Imagen OK\r\n", 11);
+        usleep(1000);  // 🔍 Separar visualmente comandos
+
+        res = genChar(&finger, 1);
+        usleep(1000);  // 🔍 Separar comando genChar()
+
+        len = snprintf(buf, sizeof(buf), "genChar() => 0x%02X\r\n", res);
+        XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+        usleep(1000);  // 🔍 Separar respuesta consola
+
+        if (res == FINGERPRINT_OK) {
+            XUartPs_Send(&uart_pc, (uint8_t*)"Char OK\r\n", 9);
+            usleep(1000);  // 🔍 Delimitar búsqueda
+
+            res = fingerFastSearch(&finger, 1, 0, 300);
+            usleep(1000);  // 🔍 Separar comando búsqueda
+
+            len = snprintf(buf, sizeof(buf), "fingerFastSearch() => 0x%02X\r\n", res);
+            XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+            usleep(1000);  // 🔍 Respuesta a consola
+
+            if (res == FINGERPRINT_OK) {
+                len = snprintf(buf, sizeof(buf),
+                      "Huella encontrada! ID: %d, Confianza: %d\r\n",
+                      finger.fingerID, finger.confidence);
+                XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+            } else {
+                XUartPs_Send(&uart_pc, (uint8_t*)"Huella no encontrada\r\n", 23);
+            }
+            usleep(1000);  // 🔍 Fin de ciclo exitoso
+        } else {
+            XUartPs_Send(&uart_pc, (uint8_t*)"Error en genChar\r\n", 19);
+            usleep(1000);  // 🔍 Fin de error genChar
+        }
+    } else {
+        len = snprintf(buf, sizeof(buf), "Error getImage: 0x%02X\r\n", res);
+        XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+        usleep(1000);  // 🔍 Fin de error getImage
+    }
+
+    usleep(500000);  // Espera general antes de repetir ciclo
+}

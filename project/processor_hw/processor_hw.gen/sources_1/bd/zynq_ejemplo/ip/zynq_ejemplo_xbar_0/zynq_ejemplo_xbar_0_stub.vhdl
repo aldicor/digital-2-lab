@@ -2,10 +2,10 @@
 -- Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2023.1 (win64) Build 3865809 Sun May  7 15:05:29 MDT 2023
--- Date        : Mon Jul 14 19:19:54 2025
--- Host        : SebasOnix-ROG-FLOW running 64-bit major release  (build 9200)
+-- Date        : Fri Jul 18 11:30:19 2025
+-- Host        : DESKTOP-Q4LM6HA running 64-bit major release  (build 9200)
 -- Command     : write_vhdl -force -mode synth_stub
---               c:/Xilinx/projects/project_procesador_general/project_procesador_general.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_xbar_0/zynq_ejemplo_xbar_0_stub.vhdl
+--               c:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/processor_hw.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_xbar_0/zynq_ejemplo_xbar_0_stub.vhdl
 -- Design      : zynq_ejemplo_xbar_0
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7z010clg400-1

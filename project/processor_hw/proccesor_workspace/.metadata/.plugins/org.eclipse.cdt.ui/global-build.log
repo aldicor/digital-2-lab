@@ -1,6 +1,6 @@
-Nothing to build in platform 'platform'
+Nothing to build in platform 'plataformaa'
 
-12:42:16 **** Incremental Build of configuration Debug for project kkkkkkkkkkkkkk ****
+15:06:50 **** Incremental Build of configuration Debug for project app ****
 make all 
 make --no-print-directory pre-build
 a9-linaro-pre-build-step
@@ -8,24 +8,24 @@ a9-linaro-pre-build-step
 make --no-print-directory main-build
 'Building file: ../src/helloworld.c'
 'Invoking: ARM v7 gcc compiler'
-arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -IC:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/platform/export/platform/sw/platform/standalone_domain/bspinclude/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.o" -o "src/helloworld.o" "../src/helloworld.c"
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -IC:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/plataformaa/export/plataformaa/sw/plataformaa/standalone_domain/bspinclude/include -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.o" -o "src/helloworld.o" "../src/helloworld.c"
 'Finished building: ../src/helloworld.c'
 ' '
-'Building target: kkkkkkkkkkkkkk.elf'
+'Building target: app.elf'
 'Invoking: ARM v7 gcc linker'
-arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -LC:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/platform/export/platform/sw/platform/standalone_domain/bsplib/lib -o "kkkkkkkkkkkkkk.elf"  ./src/as608.o ./src/helloworld.o ./src/implementacionFuncionesSensor.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
-'Finished building target: kkkkkkkkkkkkkk.elf'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -LC:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/plataformaa/export/plataformaa/sw/plataformaa/standalone_domain/bsplib/lib -o "app.elf"  ./src/helloworld.o ./src/implementacionFuncionesSensor.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: app.elf'
 ' '
 'Invoking: ARM v7 Print Size'
-arm-none-eabi-size kkkkkkkkkkkkkk.elf  |tee "kkkkkkkkkkkkkk.elf.size"
+arm-none-eabi-size app.elf  |tee "app.elf.size"
    text	   data	    bss	    dec	    hex	filename
-  29070	   1192	  22712	  52974	   ceee	kkkkkkkkkkkkkk.elf
-'Finished building: kkkkkkkkkkkkkk.elf.size'
+  58919	   2584	  22640	  84143	  148af	app.elf
+'Finished building: app.elf.size'
 ' '
-12:42:18 **** Incremental Build of configuration Debug for project kkkkkkkkkkkkkk_system ****
+15:06:52 **** Incremental Build of configuration Debug for project app_system ****
 make all 
 Generating bif file for the system project
-generate_system_bif.bat 57388 C:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/platform/export/platform/platform.xpfm standalone_domain C:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/kkkkkkkkkkkkkk_system/Debug/system.bif
-sdcard_gen --xpfm C:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/platform/export/platform/platform.xpfm --sys_config platform --bif C:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/kkkkkkkkkkkkkk_system/Debug/system.bif --bitstream C:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/kkkkkkkkkkkkkk/_ide/bitstream/zynq_ejemplo_wrapper.bit --elf C:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/kkkkkkkkkkkkkk/Debug/kkkkkkkkkkkkkk.elf,ps7_cortexa9_0
-creating BOOT.BIN using C:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/kkkkkkkkkkkkkk/_ide/bitstream/zynq_ejemplo_wrapper.bit
-Running D:/Vitis/2023.1/bin/bootgen  -image C:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/kkkkkkkkkkkkkk_system/Debug/sd_card_temp/boot.bif -w -o i BOOT.BIN
+generate_system_bif.bat 64980 C:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/plataformaa/export/plataformaa/plataformaa.xpfm standalone_domain C:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/app_system/Debug/system.bif
+sdcard_gen --xpfm C:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/plataformaa/export/plataformaa/plataformaa.xpfm --sys_config plataformaa --bif C:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/app_system/Debug/system.bif --bitstream C:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/app/_ide/bitstream/zynq_ejemplo_wrapper.bit --elf C:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/app/Debug/app.elf,ps7_cortexa9_0
+creating BOOT.BIN using C:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/app/_ide/bitstream/zynq_ejemplo_wrapper.bit
+Running D:/Vitis/2023.1/bin/bootgen  -image C:/Users/Usuario/Desktop/UNAL/2025-1/Proyecto_ED2/digital-2-lab/project/processor_hw/proccesor_workspace/app_system/Debug/sd_card_temp/boot.bif -w -o i BOOT.BIN

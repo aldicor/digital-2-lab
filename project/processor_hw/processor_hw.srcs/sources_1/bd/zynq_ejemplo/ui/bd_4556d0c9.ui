@@ -1,40 +1,37 @@
 {
    "ActiveEmotionalView":"Default View",
-   "Default View_ScaleFactor":"0.608299",
-   "Default View_TopLeft":"-3,62",
+   "Default View_ScaleFactor":"1.50499",
+   "Default View_TopLeft":"198,241",
    "ExpandedHierarchyInLayout":"",
    "guistr":"# # String gsaved with Nlview 7.5.8 2022-09-21 7111 VDI=41 GEI=38 GUI=JA:10.0
 #  -string -flagsOSRD
-preplace port DDR -pg 1 -lvl 5 -x 1300 -y 30 -defaultsOSRD
-preplace port FIXED_IO -pg 1 -lvl 5 -x 1300 -y 0 -defaultsOSRD
-preplace port port-id_UART0_TX_huella -pg 1 -lvl 5 -x 1300 -y 50 -defaultsOSRD
+preplace port DDR -pg 1 -lvl 5 -x 1340 -y 30 -defaultsOSRD
+preplace port FIXED_IO -pg 1 -lvl 5 -x 1340 -y 0 -defaultsOSRD
+preplace port bloqueo -pg 1 -lvl 5 -x 1340 -y 430 -defaultsOSRD
+preplace port port-id_UART0_TX_huella -pg 1 -lvl 5 -x 1340 -y 50 -defaultsOSRD
 preplace port port-id_UART0_RX_huella -pg 1 -lvl 0 -x -100 -y -40 -defaultsOSRD
-preplace port port-id_boton_fpga_0 -pg 1 -lvl 0 -x -100 -y 520 -defaultsOSRD
-preplace port port-id_motorIzq_on_0 -pg 1 -lvl 5 -x 1300 -y 480 -defaultsOSRD
-preplace port port-id_motorDer_on_0 -pg 1 -lvl 5 -x 1300 -y 500 -defaultsOSRD
-preplace inst axi_interconnect_0 -pg 1 -lvl 2 -x 540 -y 180 -defaultsOSRD
-preplace inst axi_bram_ctrl_0 -pg 1 -lvl 3 -x 860 -y 160 -defaultsOSRD
-preplace inst blk_mem_gen_0 -pg 1 -lvl 4 -x 1150 -y 210 -defaultsOSRD
-preplace inst axi_gpio_motores -pg 1 -lvl 3 -x 860 -y 410 -defaultsOSRD
-preplace inst proc_sys_reset_0 -pg 1 -lvl 1 -x 130 -y 350 -defaultsOSRD
-preplace inst processing_system7_0 -pg 1 -lvl 1 -x 130 -y 120 -defaultsOSRD
-preplace inst motoresControl_0 -pg 1 -lvl 2 -x 540 -y 490 -defaultsOSRD
-preplace netloc ARESETN_1 1 1 2 380 320 720
-preplace netloc UART0_RX_0_1 1 0 2 NJ -40 330
-preplace netloc axi_gpio_0_gpio_io_o 1 1 3 390 330 N 330 1000
-preplace netloc boton_fpga_0_1 1 0 2 N 520 N
-preplace netloc motoresControl_0_motorDer_on 1 2 3 NJ 500 NJ 500 NJ
-preplace netloc motoresControl_0_motorIzq_on 1 2 3 690J 490 1000J 480 NJ
-preplace netloc processing_system7_0_FCLK_CLK0 1 0 3 -70 -30 360 340 710
-preplace netloc processing_system7_0_FCLK_RESET0_N 1 0 2 -70 450 330
-preplace netloc processing_system7_0_UART0_TX 1 1 4 350J 20 NJ 20 NJ 20 1280J
-preplace netloc axi_bram_ctrl_0_BRAM_PORTA 1 3 1 1000J 160n
-preplace netloc axi_interconnect_0_M00_AXI 1 2 1 700 170n
+preplace port port-id_adelante -pg 1 -lvl 0 -x -100 -y 520 -defaultsOSRD
+preplace port port-id_motorOn -pg 1 -lvl 5 -x 1340 -y 480 -defaultsOSRD
+preplace inst axi_interconnect_0 -pg 1 -lvl 2 -x 540 -y 160 -defaultsOSRD
+preplace inst axi_bram_ctrl_0 -pg 1 -lvl 3 -x 910 -y 160 -defaultsOSRD
+preplace inst blk_mem_gen_0 -pg 1 -lvl 4 -x 1180 -y 210 -defaultsOSRD
+preplace inst axi_gpio_motores -pg 1 -lvl 3 -x 910 -y 410 -defaultsOSRD
+preplace inst proc_sys_reset_0 -pg 1 -lvl 1 -x 120 -y 350 -defaultsOSRD
+preplace inst processing_system7_0 -pg 1 -lvl 1 -x 120 -y 120 -defaultsOSRD
+preplace inst motores_0 -pg 1 -lvl 2 -x 540 -y 390 -defaultsOSRD
+preplace netloc ARESETN_1 1 1 2 390 480 770
+preplace netloc UART0_RX_0_1 1 0 2 NJ -40 320
+preplace netloc processing_system7_0_FCLK_CLK0 1 0 3 -80 -30 360 300 760
+preplace netloc processing_system7_0_FCLK_RESET0_N 1 0 2 -80 450 320
+preplace netloc processing_system7_0_UART0_TX 1 1 4 370J 20 NJ 20 NJ 20 1310J
+preplace netloc axi_bram_ctrl_0_BRAM_PORTA 1 3 1 1050J 160n
+preplace netloc axi_interconnect_0_M00_AXI 1 2 1 700 150n
 preplace netloc axi_interconnect_0_M01_AXI 1 2 1 690 140n
-preplace netloc processing_system7_0_DDR 1 1 4 NJ 30 NJ 30 NJ 30 NJ
-preplace netloc processing_system7_0_FIXED_IO 1 1 4 340J 0 NJ 0 NJ 0 NJ
-preplace netloc processing_system7_0_M_AXI_GP0 1 1 1 370 100n
-levelinfo -pg 1 -100 130 540 860 1150 1300
+preplace netloc processing_system7_0_DDR 1 1 4 340J 10 NJ 10 NJ 10 1320J
+preplace netloc processing_system7_0_FIXED_IO 1 1 4 330J 0 NJ 0 NJ 0 NJ
+preplace netloc processing_system7_0_M_AXI_GP0 1 1 1 380 80n
+preplace netloc axi_gpio_motores_GPIO2 1 3 2 NJ 420 1320J
+levelinfo -pg 1 -100 120 540 910 1180 1340
 pagesize -pg 1 -db -bbox -sgen -270 -180 1790 1170
 "
 }
