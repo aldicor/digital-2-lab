@@ -4,7 +4,7 @@
 
 set TIME_start [clock seconds] 
 namespace eval ::optrace {
-  variable script "C:/Xilinx/projects/project_procesador_general/project_procesador_general.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1/zynq_ejemplo_axi_bram_ctrl_0_0.tcl"
+  variable script "D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1/zynq_ejemplo_axi_bram_ctrl_0_0.tcl"
   variable category "vivado_synth"
 }
 
@@ -79,18 +79,17 @@ set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
 set_param synth.vivado.isSynthRun true
 set_msg_config -source 4 -id {IP_Flow 19-2162} -severity warning -new_severity info
-set_property webtalk.parent_dir C:/Xilinx/projects/project_procesador_general/project_procesador_general.cache/wt [current_project]
-set_property parent.project_path C:/Xilinx/projects/project_procesador_general/project_procesador_general.xpr [current_project]
+set_property webtalk.parent_dir D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.cache/wt [current_project]
+set_property parent.project_path D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.xpr [current_project]
 set_property XPM_LIBRARIES {XPM_CDC XPM_MEMORY} [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
-set_property board_part digilentinc.com:zybo-z7-10:part0:1.2 [current_project]
-set_property ip_output_repo c:/Xilinx/projects/project_procesador_general/project_procesador_general.cache/ip [current_project]
+set_property ip_output_repo d:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
-read_ip -quiet c:/Xilinx/projects/project_procesador_general/project_procesador_general.srcs/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0.xci
-set_property used_in_implementation false [get_files -all c:/Xilinx/projects/project_procesador_general/project_procesador_general.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_ooc.xdc]
+read_ip -quiet D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.srcs/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0.xci
+set_property used_in_implementation false [get_files -all d:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_ooc.xdc]
 
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being
@@ -106,7 +105,7 @@ set_property used_in_implementation false [get_files dont_touch.xdc]
 set_param ips.enableIPCacheLiteLoad 1
 OPTRACE "Configure IP Cache" START { }
 
-set cacheID [config_ip_cache -export -no_bom  -dir C:/Xilinx/projects/project_procesador_general/project_procesador_general.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1 -new_name zynq_ejemplo_axi_bram_ctrl_0_0 -ip [get_ips zynq_ejemplo_axi_bram_ctrl_0_0]]
+set cacheID [config_ip_cache -export -no_bom  -dir D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1 -new_name zynq_ejemplo_axi_bram_ctrl_0_0 -ip [get_ips zynq_ejemplo_axi_bram_ctrl_0_0]]
 
 OPTRACE "Configure IP Cache" END { }
 if { $cacheID == "" } {
@@ -161,32 +160,32 @@ create_report "zynq_ejemplo_axi_bram_ctrl_0_0_synth_1_synth_report_utilization_0
 OPTRACE "synth reports" END { }
 
 if { [catch {
-  file copy -force C:/Xilinx/projects/project_procesador_general/project_procesador_general.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1/zynq_ejemplo_axi_bram_ctrl_0_0.dcp c:/Xilinx/projects/project_procesador_general/project_procesador_general.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0.dcp
+  file copy -force D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1/zynq_ejemplo_axi_bram_ctrl_0_0.dcp d:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0.dcp
 } _RESULT ] } { 
   send_msg_id runtcl-3 status "ERROR: Unable to successfully create or copy the sub-design checkpoint file."
   error "ERROR: Unable to successfully create or copy the sub-design checkpoint file."
 }
 
 if { [catch {
-  write_verilog -force -mode synth_stub c:/Xilinx/projects/project_procesador_general/project_procesador_general.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_stub.v
+  write_verilog -force -mode synth_stub d:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_stub.v
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create a Verilog synthesis stub for the sub-design. This may lead to errors in top level synthesis of the design. Error reported: $_RESULT"
 }
 
 if { [catch {
-  write_vhdl -force -mode synth_stub c:/Xilinx/projects/project_procesador_general/project_procesador_general.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_stub.vhdl
+  write_vhdl -force -mode synth_stub d:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_stub.vhdl
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create a VHDL synthesis stub for the sub-design. This may lead to errors in top level synthesis of the design. Error reported: $_RESULT"
 }
 
 if { [catch {
-  write_verilog -force -mode funcsim c:/Xilinx/projects/project_procesador_general/project_procesador_general.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_sim_netlist.v
+  write_verilog -force -mode funcsim d:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_sim_netlist.v
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create the Verilog functional simulation sub-design file. Post-Synthesis Functional Simulation with this file may not be possible or may give incorrect results. Error reported: $_RESULT"
 }
 
 if { [catch {
-  write_vhdl -force -mode funcsim c:/Xilinx/projects/project_procesador_general/project_procesador_general.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_sim_netlist.vhdl
+  write_vhdl -force -mode funcsim d:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_sim_netlist.vhdl
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create the VHDL functional simulation sub-design file. Post-Synthesis Functional Simulation with this file may not be possible or may give incorrect results. Error reported: $_RESULT"
 }
@@ -196,32 +195,32 @@ if { [catch {
 
 
 if { [catch {
-  file copy -force C:/Xilinx/projects/project_procesador_general/project_procesador_general.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1/zynq_ejemplo_axi_bram_ctrl_0_0.dcp c:/Xilinx/projects/project_procesador_general/project_procesador_general.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0.dcp
+  file copy -force D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1/zynq_ejemplo_axi_bram_ctrl_0_0.dcp d:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0.dcp
 } _RESULT ] } { 
   send_msg_id runtcl-3 status "ERROR: Unable to successfully create or copy the sub-design checkpoint file."
   error "ERROR: Unable to successfully create or copy the sub-design checkpoint file."
 }
 
 if { [catch {
-  file rename -force C:/Xilinx/projects/project_procesador_general/project_procesador_general.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1/zynq_ejemplo_axi_bram_ctrl_0_0_stub.v c:/Xilinx/projects/project_procesador_general/project_procesador_general.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_stub.v
+  file rename -force D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1/zynq_ejemplo_axi_bram_ctrl_0_0_stub.v d:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_stub.v
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create a Verilog synthesis stub for the sub-design. This may lead to errors in top level synthesis of the design. Error reported: $_RESULT"
 }
 
 if { [catch {
-  file rename -force C:/Xilinx/projects/project_procesador_general/project_procesador_general.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1/zynq_ejemplo_axi_bram_ctrl_0_0_stub.vhdl c:/Xilinx/projects/project_procesador_general/project_procesador_general.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_stub.vhdl
+  file rename -force D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1/zynq_ejemplo_axi_bram_ctrl_0_0_stub.vhdl d:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_stub.vhdl
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create a VHDL synthesis stub for the sub-design. This may lead to errors in top level synthesis of the design. Error reported: $_RESULT"
 }
 
 if { [catch {
-  file rename -force C:/Xilinx/projects/project_procesador_general/project_procesador_general.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1/zynq_ejemplo_axi_bram_ctrl_0_0_sim_netlist.v c:/Xilinx/projects/project_procesador_general/project_procesador_general.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_sim_netlist.v
+  file rename -force D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1/zynq_ejemplo_axi_bram_ctrl_0_0_sim_netlist.v d:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_sim_netlist.v
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create the Verilog functional simulation sub-design file. Post-Synthesis Functional Simulation with this file may not be possible or may give incorrect results. Error reported: $_RESULT"
 }
 
 if { [catch {
-  file rename -force C:/Xilinx/projects/project_procesador_general/project_procesador_general.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1/zynq_ejemplo_axi_bram_ctrl_0_0_sim_netlist.vhdl c:/Xilinx/projects/project_procesador_general/project_procesador_general.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_sim_netlist.vhdl
+  file rename -force D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1/zynq_ejemplo_axi_bram_ctrl_0_0_sim_netlist.vhdl d:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_sim_netlist.vhdl
 } _RESULT ] } { 
   puts "CRITICAL WARNING: Unable to successfully create the VHDL functional simulation sub-design file. Post-Synthesis Functional Simulation with this file may not be possible or may give incorrect results. Error reported: $_RESULT"
 }
@@ -229,15 +228,15 @@ if { [catch {
 close [open .end.used_ip_cache.rst w]
 }; # end if cacheID 
 
-if {[file isdir C:/Xilinx/projects/project_procesador_general/project_procesador_general.ip_user_files/ip/zynq_ejemplo_axi_bram_ctrl_0_0]} {
+if {[file isdir D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.ip_user_files/ip/zynq_ejemplo_axi_bram_ctrl_0_0]} {
   catch { 
-    file copy -force c:/Xilinx/projects/project_procesador_general/project_procesador_general.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_stub.v C:/Xilinx/projects/project_procesador_general/project_procesador_general.ip_user_files/ip/zynq_ejemplo_axi_bram_ctrl_0_0
+    file copy -force d:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_stub.v D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.ip_user_files/ip/zynq_ejemplo_axi_bram_ctrl_0_0
   }
 }
 
-if {[file isdir C:/Xilinx/projects/project_procesador_general/project_procesador_general.ip_user_files/ip/zynq_ejemplo_axi_bram_ctrl_0_0]} {
+if {[file isdir D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.ip_user_files/ip/zynq_ejemplo_axi_bram_ctrl_0_0]} {
   catch { 
-    file copy -force c:/Xilinx/projects/project_procesador_general/project_procesador_general.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_stub.vhdl C:/Xilinx/projects/project_procesador_general/project_procesador_general.ip_user_files/ip/zynq_ejemplo_axi_bram_ctrl_0_0
+    file copy -force d:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_stub.vhdl D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.ip_user_files/ip/zynq_ejemplo_axi_bram_ctrl_0_0
   }
 }
 file delete __synthesis_is_running__

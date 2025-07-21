@@ -1,8 +1,8 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2023.1 (win64) Build 3865809 Sun May  7 15:05:29 MDT 2023
-| Date             : Mon Jul 14 19:22:51 2025
-| Host             : SebasOnix-ROG-FLOW running 64-bit major release  (build 9200)
+| Date             : Sun Jul 20 18:32:59 2025
+| Host             : DESKTOP-J5MV1M4 running 64-bit major release  (build 9200)
 | Command          : report_power -file zynq_ejemplo_wrapper_power_routed.rpt -pb zynq_ejemplo_wrapper_power_summary_routed.pb -rpx zynq_ejemplo_wrapper_power_routed.rpx
 | Design           : zynq_ejemplo_wrapper
 | Device           : xc7z010clg400-1
@@ -53,15 +53,15 @@ Table of Contents
 | On-Chip                 | Power (W) | Used     | Available | Utilization (%) |
 +-------------------------+-----------+----------+-----------+-----------------+
 | Clocks                  |     0.003 |        3 |       --- |             --- |
-| Slice Logic             |     0.001 |     3351 |       --- |             --- |
-|   LUT as Logic          |     0.001 |     1127 |     17600 |            6.40 |
-|   Register              |    <0.001 |     1542 |     35200 |            4.38 |
+| Slice Logic             |     0.001 |     3328 |       --- |             --- |
+|   LUT as Logic          |     0.001 |     1129 |     17600 |            6.41 |
+|   Register              |    <0.001 |     1510 |     35200 |            4.29 |
 |   CARRY4                |    <0.001 |       51 |      4400 |            1.16 |
 |   LUT as Shift Register |    <0.001 |       71 |      6000 |            1.18 |
-|   Others                |     0.000 |      241 |       --- |             --- |
-| Signals                 |     0.002 |     2497 |       --- |             --- |
+|   Others                |     0.000 |      243 |       --- |             --- |
+| Signals                 |     0.002 |     2470 |       --- |             --- |
 | Block RAM               |    <0.001 |        2 |        60 |            3.33 |
-| I/O                     |    <0.001 |        8 |       100 |            8.00 |
+| I/O                     |    <0.001 |        6 |       100 |            6.00 |
 | PS7                     |     1.399 |        1 |       --- |             --- |
 | Static Power            |     0.121 |          |           |                 |
 | Total                   |     1.527 |          |           |                 |
@@ -74,7 +74,7 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
 +-----------+-------------+-----------+-------------+------------+-------------+-------------+------------+
-| Vccint    |       1.000 |     0.014 |       0.007 |      0.007 |       NA    | Unspecified | NA         |
+| Vccint    |       1.000 |     0.013 |       0.007 |      0.007 |       NA    | Unspecified | NA         |
 | Vccaux    |       1.800 |     0.008 |       0.000 |      0.008 |       NA    | Unspecified | NA         |
 | Vcco33    |       3.300 |     0.001 |       0.000 |      0.001 |       NA    | Unspecified | NA         |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
@@ -156,9 +156,7 @@ Table of Contents
 |       U0                 |     0.001 |
 |     axi_interconnect_0   |     0.004 |
 |       m00_couplers       |     0.002 |
-|       xbar               |     0.003 |
-|     blk_mem_gen_0        |     0.001 |
-|       U0                 |     0.001 |
+|       xbar               |     0.002 |
 |     processing_system7_0 |     1.399 |
 |       inst               |     1.399 |
 +--------------------------+-----------+

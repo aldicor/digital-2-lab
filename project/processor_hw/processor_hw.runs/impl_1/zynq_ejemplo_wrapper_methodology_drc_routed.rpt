@@ -1,8 +1,8 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.1 (win64) Build 3865809 Sun May  7 15:05:29 MDT 2023
-| Date         : Mon Jul 14 19:22:50 2025
-| Host         : SebasOnix-ROG-FLOW running 64-bit major release  (build 9200)
+| Date         : Sun Jul 20 18:32:56 2025
+| Host         : DESKTOP-J5MV1M4 running 64-bit major release  (build 9200)
 | Command      : report_methodology -file zynq_ejemplo_wrapper_methodology_drc_routed.rpt -pb zynq_ejemplo_wrapper_methodology_drc_routed.pb -rpx zynq_ejemplo_wrapper_methodology_drc_routed.rpx
 | Design       : zynq_ejemplo_wrapper
 | Device       : xc7z010clg400-1
@@ -23,53 +23,33 @@ Table of Contents
           Floorplan: design_1
       Design limits: <entire design considered>
              Max violations: <unlimited>
-             Violations found: 8
+             Violations found: 4
 +-----------+----------+-------------------------------+------------+
 | Rule      | Severity | Description                   | Violations |
 +-----------+----------+-------------------------------+------------+
-| TIMING-18 | Warning  | Missing input or output delay | 8          |
+| TIMING-18 | Warning  | Missing input or output delay | 4          |
 +-----------+----------+-------------------------------+------------+
 
 2. REPORT DETAILS
 -----------------
 TIMING-18#1 Warning
 Missing input or output delay  
-An input delay is missing on btns_4bits_tri_i[0] relative to the rising and/or falling clock edge(s) of clk_fpga_0.
+An input delay is missing on adelante_0 relative to the rising and/or falling clock edge(s) of clk_fpga_0.
 Related violations: <none>
 
 TIMING-18#2 Warning
 Missing input or output delay  
-An input delay is missing on btns_4bits_tri_i[1] relative to the rising and/or falling clock edge(s) of clk_fpga_0.
+An input delay is missing on bloqueo_tri_i[0] relative to the rising and/or falling clock edge(s) of clk_fpga_0.
 Related violations: <none>
 
 TIMING-18#3 Warning
 Missing input or output delay  
-An input delay is missing on btns_4bits_tri_i[2] relative to the rising and/or falling clock edge(s) of clk_fpga_0.
+An output delay is missing on alerta_0[0] relative to the rising and/or falling clock edge(s) of clk_fpga_0.
 Related violations: <none>
 
 TIMING-18#4 Warning
 Missing input or output delay  
-An input delay is missing on btns_4bits_tri_i[3] relative to the rising and/or falling clock edge(s) of clk_fpga_0.
-Related violations: <none>
-
-TIMING-18#5 Warning
-Missing input or output delay  
-An output delay is missing on leds_4bits_tri_o[0] relative to the rising and/or falling clock edge(s) of clk_fpga_0.
-Related violations: <none>
-
-TIMING-18#6 Warning
-Missing input or output delay  
-An output delay is missing on leds_4bits_tri_o[1] relative to the rising and/or falling clock edge(s) of clk_fpga_0.
-Related violations: <none>
-
-TIMING-18#7 Warning
-Missing input or output delay  
-An output delay is missing on leds_4bits_tri_o[2] relative to the rising and/or falling clock edge(s) of clk_fpga_0.
-Related violations: <none>
-
-TIMING-18#8 Warning
-Missing input or output delay  
-An output delay is missing on leds_4bits_tri_o[3] relative to the rising and/or falling clock edge(s) of clk_fpga_0.
+An output delay is missing on motorOn_0 relative to the rising and/or falling clock edge(s) of clk_fpga_0.
 Related violations: <none>
 
 

@@ -17,7 +17,7 @@ proc create_report { reportName command } {
   }
 }
 namespace eval ::optrace {
-  variable script "C:/Xilinx/projects/project_procesador_general/project_procesador_general.runs/impl_1/zynq_ejemplo_wrapper.tcl"
+  variable script "D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.runs/impl_1/zynq_ejemplo_wrapper.tcl"
   variable category "vivado_impl"
 }
 
@@ -115,6 +115,7 @@ proc step_failed { step } {
 OPTRACE "impl_1" END { }
 }
 
+set_msg_config -id {HDL-1065} -limit 10000
 
 OPTRACE "impl_1" START { ROLLUP_1 }
 OPTRACE "Phase: Init Design" START { ROLLUP_AUTO }
@@ -122,28 +123,28 @@ start_step init_design
 set ACTIVE_STEP init_design
 set rc [catch {
   create_msg_db init_design.pb
-  set_param chipscope.maxJobs 4
-  set_param runs.launchOptions { -jobs 16  }
+  set_param chipscope.maxJobs 2
+  set_param runs.launchOptions { -jobs 8  }
 OPTRACE "create in-memory project" START { }
   create_project -in_memory -part xc7z010clg400-1
-  set_property board_part digilentinc.com:zybo-z7-10:part0:1.2 [current_project]
   set_property design_mode GateLvl [current_fileset]
   set_param project.singleFileAddWarning.threshold 0
 OPTRACE "create in-memory project" END { }
 OPTRACE "set parameters" START { }
-  set_property webtalk.parent_dir C:/Xilinx/projects/project_procesador_general/project_procesador_general.cache/wt [current_project]
-  set_property parent.project_path C:/Xilinx/projects/project_procesador_general/project_procesador_general.xpr [current_project]
-  set_property ip_output_repo C:/Xilinx/projects/project_procesador_general/project_procesador_general.cache/ip [current_project]
+  set_property webtalk.parent_dir D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.cache/wt [current_project]
+  set_property parent.project_path D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.xpr [current_project]
+  set_property ip_output_repo D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.cache/ip [current_project]
   set_property ip_cache_permissions {read write} [current_project]
   set_property XPM_LIBRARIES {XPM_CDC XPM_MEMORY} [current_project]
 OPTRACE "set parameters" END { }
 OPTRACE "add files" START { }
-  add_files -quiet C:/Xilinx/projects/project_procesador_general/project_procesador_general.runs/synth_1/zynq_ejemplo_wrapper.dcp
+  add_files -quiet D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.runs/synth_1/zynq_ejemplo_wrapper.dcp
   set_msg_config -source 4 -id {BD 41-1661} -limit 0
   set_param project.isImplRun true
-  add_files C:/Xilinx/projects/project_procesador_general/project_procesador_general.srcs/sources_1/bd/zynq_ejemplo/zynq_ejemplo.bd
+  add_files D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.srcs/sources_1/bd/zynq_ejemplo/zynq_ejemplo.bd
   set_param project.isImplRun false
 OPTRACE "read constraints: implementation" START { }
+  read_xdc D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.srcs/constrs_1/new/pines.xdc
 OPTRACE "read constraints: implementation" END { }
 OPTRACE "add files" END { }
 OPTRACE "link_design" START { }

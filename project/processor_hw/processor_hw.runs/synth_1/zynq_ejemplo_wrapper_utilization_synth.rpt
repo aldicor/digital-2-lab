@@ -1,8 +1,8 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2023.1 (win64) Build 3865809 Sun May  7 15:05:29 MDT 2023
-| Date         : Mon Jul 14 19:21:05 2025
-| Host         : SebasOnix-ROG-FLOW running 64-bit major release  (build 9200)
+| Date         : Sun Jul 20 18:30:41 2025
+| Host         : DESKTOP-J5MV1M4 running 64-bit major release  (build 9200)
 | Command      : report_utilization -file zynq_ejemplo_wrapper_utilization_synth.rpt -pb zynq_ejemplo_wrapper_utilization_synth.pb
 | Design       : zynq_ejemplo_wrapper
 | Device       : xc7z010clg400-1
@@ -92,7 +92,7 @@ Warning! LUT value is adjusted to account for LUT combining.
 +-----------------------------+------+-------+------------+-----------+-------+
 |          Site Type          | Used | Fixed | Prohibited | Available | Util% |
 +-----------------------------+------+-------+------------+-----------+-------+
-| Bonded IOB                  |    8 |     0 |          0 |       100 |  8.00 |
+| Bonded IOB                  |    6 |     0 |          0 |       100 |  6.00 |
 | Bonded IPADs                |    0 |     0 |          0 |         2 |  0.00 |
 | Bonded IOPADs               |    0 |     0 |          0 |       130 |  0.00 |
 | PHY_CONTROL                 |    0 |     0 |          0 |         2 |  0.00 |
@@ -148,8 +148,8 @@ Warning! LUT value is adjusted to account for LUT combining.
 +----------+------+---------------------+
 | Ref Name | Used | Functional Category |
 +----------+------+---------------------+
-| OBUF     |    4 |                  IO |
-| IBUF     |    4 |                  IO |
+| OBUF     |    3 |                  IO |
+| IBUF     |    3 |                  IO |
 +----------+------+---------------------+
 
 
@@ -162,6 +162,7 @@ Warning! LUT value is adjusted to account for LUT combining.
 | zynq_ejemplo_xbar_0                 |    1 |
 | zynq_ejemplo_processing_system7_0_0 |    1 |
 | zynq_ejemplo_proc_sys_reset_0_0     |    1 |
+| zynq_ejemplo_motores_0_3            |    1 |
 | zynq_ejemplo_blk_mem_gen_0_0        |    1 |
 | zynq_ejemplo_axi_gpio_0_0           |    1 |
 | zynq_ejemplo_axi_bram_ctrl_0_0      |    1 |

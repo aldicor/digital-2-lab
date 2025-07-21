@@ -12,9 +12,9 @@ echo "Please update the PATH and LD_LIBRARY_PATH variables below, before executi
 exit
 
 if [ -z "$PATH" ]; then
-  PATH=C:/Xilinx/Vitis/2023.1/bin;C:/Xilinx/Vivado/2023.1/ids_lite/ISE/bin/nt64;C:/Xilinx/Vivado/2023.1/ids_lite/ISE/lib/nt64:C:/Xilinx/Vivado/2023.1/bin
+  PATH=D:/programas/vivado/Vitis/2023.1/bin;D:/programas/vivado/Vivado/2023.1/ids_lite/ISE/bin/nt64;D:/programas/vivado/Vivado/2023.1/ids_lite/ISE/lib/nt64:D:/programas/vivado/Vivado/2023.1/bin
 else
-  PATH=C:/Xilinx/Vitis/2023.1/bin;C:/Xilinx/Vivado/2023.1/ids_lite/ISE/bin/nt64;C:/Xilinx/Vivado/2023.1/ids_lite/ISE/lib/nt64:C:/Xilinx/Vivado/2023.1/bin:$PATH
+  PATH=D:/programas/vivado/Vitis/2023.1/bin;D:/programas/vivado/Vivado/2023.1/ids_lite/ISE/bin/nt64;D:/programas/vivado/Vivado/2023.1/ids_lite/ISE/lib/nt64:D:/programas/vivado/Vivado/2023.1/bin:$PATH
 fi
 export PATH
 
@@ -25,7 +25,7 @@ else
 fi
 export LD_LIBRARY_PATH
 
-HD_PWD='C:/Xilinx/projects/project_procesador_general/project_procesador_general.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1'
+HD_PWD='D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1'
 cd "$HD_PWD"
 
 HD_LOG=runme.log

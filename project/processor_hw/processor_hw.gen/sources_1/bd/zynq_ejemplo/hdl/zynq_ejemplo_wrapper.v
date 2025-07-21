@@ -2,8 +2,8 @@
 //Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2023.1 (win64) Build 3865809 Sun May  7 15:05:29 MDT 2023
-//Date        : Mon Jul 14 19:16:02 2025
-//Host        : SebasOnix-ROG-FLOW running 64-bit major release  (build 9200)
+//Date        : Sun Jul 20 18:28:04 2025
+//Host        : DESKTOP-J5MV1M4 running 64-bit major release  (build 9200)
 //Command     : generate_target zynq_ejemplo_wrapper.bd
 //Design      : zynq_ejemplo_wrapper
 //Purpose     : IP block netlist
@@ -32,8 +32,12 @@ module zynq_ejemplo_wrapper
     FIXED_IO_ps_clk,
     FIXED_IO_ps_porb,
     FIXED_IO_ps_srstb,
-    btns_4bits_tri_i,
-    leds_4bits_tri_o);
+    UART0_RX_huella,
+    UART0_TX_huella,
+    adelante_0,
+    alerta_0,
+    bloqueo_tri_i,
+    motorOn_0);
   inout [14:0]DDR_addr;
   inout [2:0]DDR_ba;
   inout DDR_cas_n;
@@ -55,8 +59,12 @@ module zynq_ejemplo_wrapper
   inout FIXED_IO_ps_clk;
   inout FIXED_IO_ps_porb;
   inout FIXED_IO_ps_srstb;
-  input [3:0]btns_4bits_tri_i;
-  output [3:0]leds_4bits_tri_o;
+  input UART0_RX_huella;
+  output UART0_TX_huella;
+  input adelante_0;
+  output [0:0]alerta_0;
+  input [0:0]bloqueo_tri_i;
+  output motorOn_0;
 
   wire [14:0]DDR_addr;
   wire [2:0]DDR_ba;
@@ -79,8 +87,12 @@ module zynq_ejemplo_wrapper
   wire FIXED_IO_ps_clk;
   wire FIXED_IO_ps_porb;
   wire FIXED_IO_ps_srstb;
-  wire [3:0]btns_4bits_tri_i;
-  wire [3:0]leds_4bits_tri_o;
+  wire UART0_RX_huella;
+  wire UART0_TX_huella;
+  wire adelante_0;
+  wire [0:0]alerta_0;
+  wire [0:0]bloqueo_tri_i;
+  wire motorOn_0;
 
   zynq_ejemplo zynq_ejemplo_i
        (.DDR_addr(DDR_addr),
@@ -104,6 +116,10 @@ module zynq_ejemplo_wrapper
         .FIXED_IO_ps_clk(FIXED_IO_ps_clk),
         .FIXED_IO_ps_porb(FIXED_IO_ps_porb),
         .FIXED_IO_ps_srstb(FIXED_IO_ps_srstb),
-        .btns_4bits_tri_i(btns_4bits_tri_i),
-        .leds_4bits_tri_o(leds_4bits_tri_o));
+        .UART0_RX_huella(UART0_RX_huella),
+        .UART0_TX_huella(UART0_TX_huella),
+        .adelante_0(adelante_0),
+        .alerta_0(alerta_0),
+        .bloqueo_tri_i(bloqueo_tri_i),
+        .motorOn_0(motorOn_0));
 endmodule

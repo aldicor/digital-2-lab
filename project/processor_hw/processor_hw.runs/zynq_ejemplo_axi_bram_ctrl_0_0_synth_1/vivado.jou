@@ -3,12 +3,12 @@
 # SW Build 3865809 on Sun May  7 15:05:29 MDT 2023
 # IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
 # SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
-# Start of session at: Mon Jul 14 19:16:45 2025
-# Process ID: 8124
-# Current directory: C:/Xilinx/projects/project_procesador_general/project_procesador_general.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1
+# Start of session at: Sun Jul 20 16:31:05 2025
+# Process ID: 3368
+# Current directory: D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1
 # Command line: vivado.exe -log zynq_ejemplo_axi_bram_ctrl_0_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source zynq_ejemplo_axi_bram_ctrl_0_0.tcl
-# Log file: C:/Xilinx/projects/project_procesador_general/project_procesador_general.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1/zynq_ejemplo_axi_bram_ctrl_0_0.vds
-# Journal file: C:/Xilinx/projects/project_procesador_general/project_procesador_general.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1\vivado.jou
-# Running On: SebasOnix-ROG-FLOW, OS: Windows, CPU Frequency: 3294 MHz, CPU Physical cores: 16, Host memory: 16542 MB
+# Log file: D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1/zynq_ejemplo_axi_bram_ctrl_0_0.vds
+# Journal file: D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.runs/zynq_ejemplo_axi_bram_ctrl_0_0_synth_1\vivado.jou
+# Running On: DESKTOP-J5MV1M4, OS: Windows, CPU Frequency: 3693 MHz, CPU Physical cores: 8, Host memory: 17107 MB
 #-----------------------------------------------------------
 source zynq_ejemplo_axi_bram_ctrl_0_0.tcl -notrace
