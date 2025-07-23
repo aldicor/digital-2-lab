@@ -1,0 +1,173 @@
+#include "funcionesSensor.h"
+#include <stdio.h>
+#include "xil_printf.h"
+#include "xparameters.h"
+#include "xuartps.h"
+#include "xgpio.h"
+#include "sleep.h"
+#include "xtime_l.h"
+
+
+// IDs de dispositivos
+#define GPIO_DEVICE_ID      XPAR_AXI_GPIO_0_DEVICE_ID
+#define GPIO_CHANNEL_OUT    1   // Salidas
+#define GPIO_CHANNEL_IN     2   // Entradas
+
+// MÃ¡scaras de bits
+#define MASK_ALERTA         (1 << 0)
+#define MASK_HUELLA_VALIDA  (1 << 1)
+#define MASK_BLOQUEO        (1 << 0)  // Canal 2, bit 0
+
+// Variables globales
+static Adafruit_Fingerprint finger;
+static XUartPs uart_pc;
+static XGpio Gpio;
+static char buf[64];
+static int len;
+static u32 estado_gpio = 0; // â†� salida actual canal 1
+int alerta;
+int bloqueado;
+// Prototipos
+int verificacionHuella(void);
+void setGpioBit(u32 mask, int state);
+
+// --- FunciÃ³n auxiliar para modificar una salida sin afectar las otras ---
+void setGpioBit(u32 mask, int state) {
+    if (state)
+        estado_gpio |= mask;
+    else
+        estado_gpio &= ~mask;
+
+    XGpio_DiscreteWrite(&Gpio, GPIO_CHANNEL_OUT, estado_gpio);
+}
+
+// --- Programa principal ---
+int main(void) {
+    XUartPs uart_sensor;
+    XUartPs_Config *cfg_sensor, *cfg_pc;
+    bloqueado = 0;
+    alerta = 0;
+    int huella_valida = 0;
+
+    // UART0: Sensor AS608
+    cfg_sensor = XUartPs_LookupConfig(XPAR_XUARTPS_0_DEVICE_ID);
+    XUartPs_CfgInitialize(&uart_sensor, cfg_sensor, cfg_sensor->BaseAddress);
+    XUartPs_SetBaudRate(&uart_sensor, 57600);
+
+    // UART1: Consola PC
+    cfg_pc = XUartPs_LookupConfig(XPAR_XUARTPS_1_DEVICE_ID);
+    XUartPs_CfgInitialize(&uart_pc, cfg_pc, cfg_pc->BaseAddress);
+    XUartPs_SetBaudRate(&uart_pc, 115200);
+
+    // Inicializar sensor
+    Adafruit_Fingerprint_init(&finger, &uart_sensor);
+
+    // Inicializar GPIO
+    XGpio_Initialize(&Gpio, GPIO_DEVICE_ID);
+
+    // Canal 1 = salida (alerta y huella vÃ¡lida)
+    XGpio_SetDataDirection(&Gpio, GPIO_CHANNEL_OUT, 0b00000000);
+
+    // Canal 2 = entrada (bloqueo)
+    XGpio_SetDataDirection(&Gpio, GPIO_CHANNEL_IN, 0b00000001);
+
+    // Mensaje de inicio
+    len = snprintf(buf, sizeof(buf), "Sistema listo. Esperando huella...\r\n");
+    XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+
+    while (1) {
+        // Leer entrada de bloqueo (bit 0 de canal 2)
+        bloqueado = (XGpio_DiscreteRead(&Gpio, GPIO_CHANNEL_IN) & MASK_BLOQUEO) ? 1 : 0;
+
+        if (!huella_valida) {
+            huella_valida = verificacionHuella();
+        } else {
+            if (bloqueado) {
+                huella_valida = 0;
+            } else {
+            	huella_valida = 1;
+            }
+        }
+
+        // Actualizar salidas
+        setGpioBit(MASK_ALERTA, alerta);
+        setGpioBit(MASK_HUELLA_VALIDA, huella_valida);
+
+        usleep(500000); // 500 ms delay
+    }
+
+    return 0;
+}
+
+// --- VerificaciÃ³n de huella digital ---
+int verificacionHuella(void) {
+    static int tries = 0;
+    uint8_t res = getImage(&finger);
+
+    len = snprintf(buf, sizeof(buf), "getImage() => 0x%02X\r\n", res);
+    XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+
+    if (res == FINGERPRINT_NOFINGER) {
+        XUartPs_Send(&uart_pc, (uint8_t*)"Coloque el dedo...\r\n", 21);
+    } else if (res == FINGERPRINT_OK) {
+        XUartPs_Send(&uart_pc, (uint8_t*)"Imagen OK\r\n", 11);
+        res = genChar(&finger, 1);
+        len = snprintf(buf, sizeof(buf), "genChar() => 0x%02X\r\n", res);
+        XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+
+        if (res == FINGERPRINT_OK) {
+            res = fingerFastSearch(&finger, 1, 0, 300);
+            len = snprintf(buf, sizeof(buf), "fingerFastSearch() => 0x%02X\r\n", res);
+            XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+
+            if (res == FINGERPRINT_OK) {
+                len = snprintf(buf, sizeof(buf),
+                               "Huella encontrada! %d\r\n",
+                               finger.fingerID, finger.confidence);
+                XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+                return 1;
+            } else {
+                tries++;
+                XUartPs_Send(&uart_pc, (uint8_t*)"Huella no encontrada\r\n", 23);
+                if (tries >= 3) {
+                	XUartPs_Send(&uart_pc, (uint8_t*)"Alarma activada \r\n", 23);
+                    tries = 0;
+                    alarma_activada();
+                    return 0;
+                }
+            }
+        } else {
+            XUartPs_Send(&uart_pc, (uint8_t*)"Error en genChar\r\n", 19);
+        }
+    } else {
+        len = snprintf(buf, sizeof(buf), "Error getImage: 0x%02X\r\n", res);
+        XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+    }
+    return 0;
+}
+
+u32 seconds() {
+    XTime t;
+    XTime_GetTime(&t);  // lee el nÃºmero de ciclos
+    return (u32)(t / (COUNTS_PER_SECOND));
+}
+
+int alarma_activada(void){
+	u32 t0 = seconds();
+	u32 t_aux = t0;
+	while(t_aux < t0+10){
+		t_aux = seconds();
+		alerta = 1;
+		setGpioBit(MASK_ALERTA, alerta);
+		bloqueado = (XGpio_DiscreteRead(&Gpio, GPIO_CHANNEL_IN) & MASK_BLOQUEO) ? 1 : 0;
+		if(bloqueado){
+			break;
+		}
+	}
+	alerta = 0;
+	setGpioBit(MASK_ALERTA, alerta);
+	return 0;
+}
+
+
+

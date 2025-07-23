@@ -1,0 +1,142 @@
+#include "xparameters.h"
+#include "xiicps.h"
+#include "xuartps.h"
+#include "sleep.h"
+#include <string.h>
+#include <stdio.h>
+
+#define I2C_DEVICE_ID     XPAR_XIICPS_0_DEVICE_ID
+#define UART_DEVICE_ID    XPAR_XUARTPS_1_DEVICE_ID
+
+#define MPU6050_ADDR      0x68
+#define WHO_AM_I_REG      0x75
+#define PWR_MGMT_1        0x6B
+#define ACCEL_XOUT_H      0x3B
+
+XIicPs Iic;
+XUartPs Uart;
+
+// UART send function using XUartPs_Send
+void uart_print(const char *msg) {
+    XUartPs_Send(&Uart, (u8 *)msg, strlen(msg));
+    while (XUartPs_IsSending(&Uart)); // Ensure transmission completes
+}
+
+// Combine MSB and LSB into a signed 16-bit value
+s16 combine_bytes(u8 msb, u8 lsb) {
+    return (s16)((msb << 8) | lsb);
+}
+
+int main() {
+    XIicPs_Config *IicConfig;
+    XUartPs_Config *UartConfig;
+    u8 write_buf[2], read_buf[14];
+    char buffer[128];
+    int Status;
+
+    // Initialize UART1
+    UartConfig = XUartPs_LookupConfig(UART_DEVICE_ID);
+    Status = XUartPs_CfgInitialize(&Uart, UartConfig, UartConfig->BaseAddress);
+    if (Status != XST_SUCCESS) return XST_FAILURE;
+    XUartPs_SetBaudRate(&Uart, 115200);
+
+    uart_print("✅ MPU6050 I2C Test Started\r\n");
+
+    // Initialize I2C0
+    IicConfig = XIicPs_LookupConfig(I2C_DEVICE_ID);
+    Status = XIicPs_CfgInitialize(&Iic, IicConfig, IicConfig->BaseAddress);
+    if (Status != XST_SUCCESS) {
+        uart_print("❌ I2C Initialization Failed\r\n");
+        return XST_FAILURE;
+    }
+    XIicPs_SetSClk(&Iic, 100000); // Set to 100kHz
+
+    // Wake up MPU6050
+    write_buf[0] = PWR_MGMT_1;
+    write_buf[1] = 0x00;
+    Status = XIicPs_MasterSendPolled(&Iic, write_buf, 2, MPU6050_ADDR);
+    while (XIicPs_BusIsBusy(&Iic));
+    if (Status != XST_SUCCESS) {
+        uart_print("❌ Failed to wake up MPU6050\r\n");
+        return XST_FAILURE;
+    }
+
+    // Read WHO_AM_I register
+    write_buf[0] = WHO_AM_I_REG;
+    Status = XIicPs_MasterSendPolled(&Iic, write_buf, 1, MPU6050_ADDR);
+    while (XIicPs_BusIsBusy(&Iic));
+    if (Status != XST_SUCCESS) {
+        uart_print("❌ Failed to request WHO_AM_I\r\n");
+        return XST_FAILURE;
+    }
+
+    Status = XIicPs_MasterRecvPolled(&Iic, read_buf, 1, MPU6050_ADDR);
+    while (XIicPs_BusIsBusy(&Iic));
+    if (Status != XST_SUCCESS) {
+        uart_print("❌ Failed to read WHO_AM_I\r\n");
+        return XST_FAILURE;
+    }
+
+    sprintf(buffer, "ℹ️ WHO_AM_I = 0x%02X (Expected: 0x68)\r\n", read_buf[0]);
+    uart_print(buffer);
+
+    if (read_buf[0] != 0x68) {
+        uart_print("❌ MPU6050 not detected. Check connections.\r\n");
+        return XST_FAILURE;
+    } else {
+        uart_print("✅ MPU6050 communication OK\r\n");
+    }
+
+    // Main sensor reading loop
+    while (1) {
+        // Request 14 bytes from ACCEL_XOUT_H
+        write_buf[0] = ACCEL_XOUT_H;
+        Status = XIicPs_MasterSendPolled(&Iic, write_buf, 1, MPU6050_ADDR);
+        while (XIicPs_BusIsBusy(&Iic));
+        if (Status != XST_SUCCESS) {
+            uart_print("❌ Failed to request sensor data\r\n");
+            sleep(5);
+            continue;
+        }
+
+        Status = XIicPs_MasterRecvPolled(&Iic, read_buf, 14, MPU6050_ADDR);
+        while (XIicPs_BusIsBusy(&Iic));
+        if (Status != XST_SUCCESS) {
+            uart_print("❌ Failed to read sensor data\r\n");
+            sleep(5);
+            continue;
+        }
+
+        // Parse and scale values
+        s16 ax = combine_bytes(read_buf[0], read_buf[1]);
+        s16 ay = combine_bytes(read_buf[2], read_buf[3]);
+        s16 az = combine_bytes(read_buf[4], read_buf[5]);
+        s16 temp_raw = combine_bytes(read_buf[6], read_buf[7]);
+        s16 gx = combine_bytes(read_buf[8], read_buf[9]);
+        s16 gy = combine_bytes(read_buf[10], read_buf[11]);
+        s16 gz = combine_bytes(read_buf[12], read_buf[13]);
+
+        float accel_scale = 16384.0; // ±2g
+        float gyro_scale = 131.0;    // ±250°/s
+        float temperature = (temp_raw / 340.0) + 36.53;
+
+        // Print all sensor values
+        sprintf(buffer, "\r\n📦 MPU6050 Sensor Readings:\r\n");
+        uart_print(buffer);
+
+        sprintf(buffer, "  Accel [g]  → X: %.2f  Y: %.2f  Z: %.2f\r\n",
+                ax / accel_scale, ay / accel_scale, az / accel_scale);
+        uart_print(buffer);
+
+        sprintf(buffer, "  Gyro  [°/s]→ X: %.2f  Y: %.2f  Z: %.2f\r\n",
+                gx / gyro_scale, gy / gyro_scale, gz / gyro_scale);
+        uart_print(buffer);
+
+        sprintf(buffer, "  Temp  [°C] → %.2f\r\n", temperature);
+        uart_print(buffer);
+
+        sleep(5); // Repeat every 5 seconds
+    }
+
+    return 0;
+}

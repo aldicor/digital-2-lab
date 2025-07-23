@@ -27,14 +27,14 @@ set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==zynq_ejempl
 # IP: bd/zynq_ejemplo/ip/zynq_ejemplo_processing_system7_0_0/zynq_ejemplo_processing_system7_0_0.xci
 set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==zynq_ejemplo_processing_system7_0_0 || ORIG_REF_NAME==zynq_ejemplo_processing_system7_0_0} -quiet] -quiet
 
-# IP: bd/zynq_ejemplo/ip/zynq_ejemplo_motores_0_3/zynq_ejemplo_motores_0_3.xci
-set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==zynq_ejemplo_motores_0_3 || ORIG_REF_NAME==zynq_ejemplo_motores_0_3} -quiet] -quiet
-
 # IP: bd/zynq_ejemplo/ip/zynq_ejemplo_xlslice_0_0/zynq_ejemplo_xlslice_0_0.xci
 set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==zynq_ejemplo_xlslice_0_0 || ORIG_REF_NAME==zynq_ejemplo_xlslice_0_0} -quiet] -quiet
 
 # IP: bd/zynq_ejemplo/ip/zynq_ejemplo_xlslice_0_2/zynq_ejemplo_xlslice_0_2.xci
 set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==zynq_ejemplo_xlslice_0_2 || ORIG_REF_NAME==zynq_ejemplo_xlslice_0_2} -quiet] -quiet
+
+# IP: bd/zynq_ejemplo/ip/zynq_ejemplo_motores_0_3/zynq_ejemplo_motores_0_3.xci
+set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==zynq_ejemplo_motores_0_3 || ORIG_REF_NAME==zynq_ejemplo_motores_0_3} -quiet] -quiet
 
 # IP: bd/zynq_ejemplo/ip/zynq_ejemplo_auto_pc_1/zynq_ejemplo_auto_pc_1.xci
 set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==zynq_ejemplo_auto_pc_1 || ORIG_REF_NAME==zynq_ejemplo_auto_pc_1} -quiet] -quiet
@@ -42,4 +42,7 @@ set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==zynq_ejempl
 # IP: bd/zynq_ejemplo/ip/zynq_ejemplo_auto_pc_0/zynq_ejemplo_auto_pc_0.xci
 set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==zynq_ejemplo_auto_pc_0 || ORIG_REF_NAME==zynq_ejemplo_auto_pc_0} -quiet] -quiet
 
-# XDC: d:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.gen/sources_1/bd/zynq_ejemplo/zynq_ejemplo_ooc.xdc
+# IP: bd/zynq_ejemplo/ip/zynq_ejemplo_clockdiv_0_0/zynq_ejemplo_clockdiv_0_0.xci
+set_property KEEP_HIERARCHY SOFT [get_cells -hier -filter {REF_NAME==zynq_ejemplo_clockdiv_0_0 || ORIG_REF_NAME==zynq_ejemplo_clockdiv_0_0} -quiet] -quiet
+
+# XDC: d:/Ing_electronica_unal/7_semestre/digital_electronics_2/digital-2-lab/project/processor_hw/processor_hw.gen/sources_1/bd/zynq_ejemplo/zynq_ejemplo_ooc.xdc

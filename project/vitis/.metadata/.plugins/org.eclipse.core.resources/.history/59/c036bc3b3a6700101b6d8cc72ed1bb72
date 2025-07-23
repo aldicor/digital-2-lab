@@ -1,0 +1,88 @@
+#include "xiicps.h"
+#include "xuartps.h"
+#include "xparameters.h"
+#include "xil_printf.h"
+#include "sleep.h"
+
+#define MPU6050_ADDR    0x68
+#define I2C_DEVICE_ID   XPAR_XIICPS_0_DEVICE_ID
+#define UART_DEVICE_ID  XPAR_XUARTPS_1_DEVICE_ID
+
+XIicPs Iic;
+XUartPs Uart_Ps;
+
+int init_i2c() {
+    XIicPs_Config *Config = XIicPs_LookupConfig(I2C_DEVICE_ID);
+    if (!Config) return XST_FAILURE;
+
+    int status = XIicPs_CfgInitialize(&Iic, Config, Config->BaseAddress);
+    if (status != XST_SUCCESS) return XST_FAILURE;
+
+    XIicPs_SetSClk(&Iic, 100000); // 100 kHz
+    return XST_SUCCESS;
+}
+
+int init_uart_() {
+    XUartPs_Config *Config = XUartPs_LookupConfig(UART_DEVICE_ID);
+    if (!Config) return XST_FAILURE;
+
+    int status = XUartPs_CfgInitialize(&Uart_Ps, Config, Config->BaseAddress);
+    if (status != XST_SUCCESS) return XST_FAILURE;
+
+    return XST_SUCCESS;
+}
+
+void uart_print(const char* str) {
+    XUartPs_Send(&Uart_Ps, (u8 *)str, strlen(str));
+}
+
+int mpu6050_init() {
+    u8 data[2];
+    data[0] = 0x6B; // PWR_MGMT_1
+    data[1] = 0x00; // Wake up MPU6050
+    return XIicPs_MasterSendPolled(&Iic, data, 2, MPU6050_ADDR);
+}
+
+int mpu6050_read_accel_x(int16_t *accel_x) {
+    u8 reg = 0x3B; // ACCEL_XOUT_H
+    u8 buffer[2];
+
+    if (XIicPs_MasterSendPolled(&Iic, &reg, 1, MPU6050_ADDR) != XST_SUCCESS) return XST_FAILURE;
+    usleep(1000);
+
+    if (XIicPs_MasterRecvPolled(&Iic, buffer, 2, MPU6050_ADDR) != XST_SUCCESS) return XST_FAILURE;
+
+    *accel_x = (buffer[0] << 8) | buffer[1];
+    return XST_SUCCESS;
+}
+
+int main() {
+    init_uart_();
+    uart_print("Starting MPU6050 test...\r\n");
+
+    if (init_i2c() != XST_SUCCESS) {
+        uart_print("I2C init failed\r\n");
+        return -1;
+    }
+
+    if (mpu6050_init() != XST_SUCCESS) {
+        uart_print("MPU6050 init failed\r\n");
+        return -1;
+    }
+
+    uart_print("MPU6050 initialized.\r\n");
+
+    while (1) {
+        int16_t accel_x;
+        if (mpu6050_read_accel_x(&accel_x) == XST_SUCCESS) {
+            char msg[64];
+            snprintf(msg, sizeof(msg), "Accel X: %d\r\n", accel_x);
+            uart_print(msg);
+        } else {
+            uart_print("Read failed\r\n");
+        }
+        sleep(1);
+    }
+
+    return 0;
+}

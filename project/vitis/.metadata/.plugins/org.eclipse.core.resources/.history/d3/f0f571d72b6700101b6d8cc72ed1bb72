@@ -1,0 +1,101 @@
+#include "xiic.h"
+#include "xparameters.h"
+#include "xuartps.h"
+#include "xil_printf.h"
+#include "sleep.h"
+
+#define MPU6050_ADDR 0x68
+#define ACCEL_XOUT_H 0x3B
+#define UART_DEVICE_ID XPAR_PS7_UART_1_DEVICE_ID
+
+XIic IicInstance;
+XUartPs UartInstance;
+
+int uart_init(XUartPs *uart, u16 device_id) {
+    XUartPs_Config *config;
+    int status;
+
+    config = XUartPs_LookupConfig(device_id);
+    if (config == NULL) return XST_FAILURE;
+
+    status = XUartPs_CfgInitialize(uart, config, config->BaseAddress);
+    if (status != XST_SUCCESS) return XST_FAILURE;
+
+    // Set up UART (115200 baud, 8 data bits, 1 stop bit, no parity)
+    XUartPs_SetBaudRate(uart, 115200);
+    XUartPs_SetDataFormat(uart, 8, 1, XUARTPS_FORMAT_NO_PARITY);
+
+    return XST_SUCCESS;
+}
+
+int mpu6050_init(XIic *iic, u16 device_id) {
+    // Same initialization as before
+    XIic_Config *config;
+    int status;
+
+    config = XIic_LookupConfig(device_id);
+    if (config == NULL) return XST_FAILURE;
+
+    status = XIic_CfgInitialize(iic, config, config->BaseAddress);
+    if (status != XST_SUCCESS) return XST_FAILURE;
+
+    XIic_SetAddress(iic, XII_ADDR_TO_SEND_TYPE, 0);
+    return XST_SUCCESS;
+}
+
+int mpu6050_read(XIic *iic, u8 reg, u8 *data, int length) {
+    // Same read function as before
+    u8 tx_buf[1] = {reg};
+    int status;
+
+    status = XIic_MasterSend(iic, tx_buf, 1, MPU6050_ADDR);
+    if (status != XST_SUCCESS) return status;
+
+    return XIic_MasterRecv(iic, data, length, MPU6050_ADDR);
+}
+
+void print_uart(XUartPs *uart, const char *str) {
+    XUartPs_Send(uart, (u8 *)str, strlen(str));
+}
+
+int main() {
+    u8 data[6];
+    int16_t ax, ay, az;
+    char buffer[100];
+
+    // Initialize UART
+    if (uart_init(&UartInstance, UART_DEVICE_ID) != XST_SUCCESS) {
+        return XST_FAILURE;
+    }
+    print_uart(&UartInstance, "UART Initialized\r\n");
+
+    // Initialize I2C
+    if (mpu6050_init(&IicInstance, XPAR_IIC_0_DEVICE_ID) != XST_SUCCESS) {
+        print_uart(&UartInstance, "I2C Initialization Failed\r\n");
+        return XST_FAILURE;
+    }
+    print_uart(&UartInstance, "I2C Initialized\r\n");
+
+    // Wake up MPU6050
+    u8 wakeup[2] = {0x6B, 0x00}; // PWR_MGMT_1 register
+    XIic_MasterSend(&IicInstance, wakeup, 2, MPU6050_ADDR);
+    print_uart(&UartInstance, "MPU6050 Woken Up\r\n");
+
+    while(1) {
+        if (mpu6050_read(&IicInstance, ACCEL_XOUT_H, data, 6) == XST_SUCCESS) {
+            ax = (data[0] << 8) | data[1];
+            ay = (data[2] << 8) | data[3];
+            az = (data[4] << 8) | data[5];
+
+            // Format output string
+            sprintf(buffer, "Accel: X=%6d, Y=%6d, Z=%6d\r\n", ax, ay, az);
+            print_uart(&UartInstance, buffer);
+        } else {
+            print_uart(&UartInstance, "Read failed\r\n");
+        }
+
+        usleep(500000); // 0.5 second delay
+    }
+
+    return XST_SUCCESS;
+}

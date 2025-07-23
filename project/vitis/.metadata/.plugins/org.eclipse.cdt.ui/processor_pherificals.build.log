@@ -1,0 +1,32 @@
+12:54:39 **** Incremental Build of configuration Debug for project processor_pherificals ****
+make all 
+make --no-print-directory pre-build
+a9-linaro-pre-build-step
+' '
+make --no-print-directory main-build
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -ID:/Ing_electronica_unal/7_semestre/digital_electronics_2/digital-2-lab/project/vitis/zynq_ejemplo_wrapper/export/zynq_ejemplo_wrapper/sw/zynq_ejemplo_wrapper/standalone_ps7_cortexa9_0/bspinclude/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'verificacionHuella':
+../src/main.c:125:32: warning: too many arguments for format [-Wformat-extra-args]
+  125 |                                "Huella encontrada! %d\r\n",
+      |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+../src/main.c:135:21: warning: implicit declaration of function 'alarma_activada' [-Wimplicit-function-declaration]
+  135 |                     alarma_activada();
+      |                     ^~~~~~~~~~~~~~~
+'Finished building: ../src/main.c'
+' '
+'Building target: processor_pherificals.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -LD:/Ing_electronica_unal/7_semestre/digital_electronics_2/digital-2-lab/project/vitis/zynq_ejemplo_wrapper/export/zynq_ejemplo_wrapper/sw/zynq_ejemplo_wrapper/standalone_ps7_cortexa9_0/bsplib/lib -o "processor_pherificals.elf"  ./src/implementacionFuncionesSensor.o ./src/main.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: processor_pherificals.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size processor_pherificals.elf  |tee "processor_pherificals.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+  60983	   2600	  22832	  86415	  1518f	processor_pherificals.elf
+'Finished building: processor_pherificals.elf.size'
+' '
+
+12:54:41 Build Finished (took 1s.990ms)
+

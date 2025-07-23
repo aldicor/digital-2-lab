@@ -2,7 +2,7 @@
 //Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2023.1 (win64) Build 3865809 Sun May  7 15:05:29 MDT 2023
-//Date        : Sun Jul 20 18:28:04 2025
+//Date        : Tue Jul 22 10:54:11 2025
 //Host        : DESKTOP-J5MV1M4 running 64-bit major release  (build 9200)
 //Command     : generate_target zynq_ejemplo.bd
 //Design      : zynq_ejemplo
@@ -963,7 +963,7 @@ module s00_couplers_imp_PZDJKB
         .s_axi_wvalid(s00_couplers_to_auto_pc_WVALID));
 endmodule
 
-(* CORE_GENERATION_INFO = "zynq_ejemplo,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=zynq_ejemplo,x_ipVersion=1.00.a,x_ipLanguage=VERILOG,numBlks=15,numReposBlks=11,numNonXlnxBlks=0,numHierBlks=4,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=1,numPkgbdBlks=0,bdsource=USER,da_axi4_cnt=1,da_ps7_cnt=1,synth_mode=OOC_per_IP}" *) (* HW_HANDOFF = "zynq_ejemplo.hwdef" *) 
+(* CORE_GENERATION_INFO = "zynq_ejemplo,IP_Integrator,{x_ipVendor=xilinx.com,x_ipLibrary=BlockDiagram,x_ipName=zynq_ejemplo,x_ipVersion=1.00.a,x_ipLanguage=VERILOG,numBlks=16,numReposBlks=12,numNonXlnxBlks=0,numHierBlks=4,maxHierDepth=0,numSysgenBlks=0,numHlsBlks=0,numHdlrefBlks=2,numPkgbdBlks=0,bdsource=USER,da_axi4_cnt=1,da_ps7_cnt=1,synth_mode=OOC_per_IP}" *) (* HW_HANDOFF = "zynq_ejemplo.hwdef" *) 
 module zynq_ejemplo
    (DDR_addr,
     DDR_ba,
@@ -986,6 +986,12 @@ module zynq_ejemplo
     FIXED_IO_ps_clk,
     FIXED_IO_ps_porb,
     FIXED_IO_ps_srstb,
+    IIC_0_0_scl_i,
+    IIC_0_0_scl_o,
+    IIC_0_0_scl_t,
+    IIC_0_0_sda_i,
+    IIC_0_0_sda_o,
+    IIC_0_0_sda_t,
     UART0_RX_huella,
     UART0_TX_huella,
     adelante_0,
@@ -1013,11 +1019,17 @@ module zynq_ejemplo
   (* X_INTERFACE_INFO = "xilinx.com:display_processing_system7:fixedio:1.0 FIXED_IO PS_CLK" *) inout FIXED_IO_ps_clk;
   (* X_INTERFACE_INFO = "xilinx.com:display_processing_system7:fixedio:1.0 FIXED_IO PS_PORB" *) inout FIXED_IO_ps_porb;
   (* X_INTERFACE_INFO = "xilinx.com:display_processing_system7:fixedio:1.0 FIXED_IO PS_SRSTB" *) inout FIXED_IO_ps_srstb;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 IIC_0_0 SCL_I" *) input IIC_0_0_scl_i;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 IIC_0_0 SCL_O" *) output IIC_0_0_scl_o;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 IIC_0_0 SCL_T" *) output IIC_0_0_scl_t;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 IIC_0_0 SDA_I" *) input IIC_0_0_sda_i;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 IIC_0_0 SDA_O" *) output IIC_0_0_sda_o;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:iic:1.0 IIC_0_0 SDA_T" *) output IIC_0_0_sda_t;
   input UART0_RX_huella;
   output UART0_TX_huella;
   input adelante_0;
   output [0:0]alerta_0;
-  (* X_INTERFACE_INFO = "xilinx.com:interface:gpio:1.0 bloqueo " *) input [0:0]bloqueo_tri_i;
+  (* X_INTERFACE_INFO = "xilinx.com:interface:gpio:1.0 bloqueo TRI_I" *) input [0:0]bloqueo_tri_i;
   output motorOn_0;
 
   wire [0:0]ARESETN_1;
@@ -1084,6 +1096,7 @@ module zynq_ejemplo
   wire axi_interconnect_0_M01_AXI_WREADY;
   wire [3:0]axi_interconnect_0_M01_AXI_WSTRB;
   wire axi_interconnect_0_M01_AXI_WVALID;
+  wire clockdiv_0_clkout;
   wire motores_0_motorOn;
   wire [14:0]processing_system7_0_DDR_ADDR;
   wire [2:0]processing_system7_0_DDR_BA;
@@ -1108,6 +1121,12 @@ module zynq_ejemplo
   wire processing_system7_0_FIXED_IO_PS_CLK;
   wire processing_system7_0_FIXED_IO_PS_PORB;
   wire processing_system7_0_FIXED_IO_PS_SRSTB;
+  wire processing_system7_0_IIC_0_SCL_I;
+  wire processing_system7_0_IIC_0_SCL_O;
+  wire processing_system7_0_IIC_0_SCL_T;
+  wire processing_system7_0_IIC_0_SDA_I;
+  wire processing_system7_0_IIC_0_SDA_O;
+  wire processing_system7_0_IIC_0_SDA_T;
   wire [31:0]processing_system7_0_M_AXI_GP0_ARADDR;
   wire [1:0]processing_system7_0_M_AXI_GP0_ARBURST;
   wire [3:0]processing_system7_0_M_AXI_GP0_ARCACHE;
@@ -1147,15 +1166,21 @@ module zynq_ejemplo
   wire [3:0]processing_system7_0_M_AXI_GP0_WSTRB;
   wire processing_system7_0_M_AXI_GP0_WVALID;
   wire processing_system7_0_UART0_TX;
-  wire [0:0]xlslice_0_Dout;
   wire [0:0]xlslice_2_Dout;
+  wire [0:0]xlslice_alerta_0_Dout;
 
+  assign IIC_0_0_scl_o = processing_system7_0_IIC_0_SCL_O;
+  assign IIC_0_0_scl_t = processing_system7_0_IIC_0_SCL_T;
+  assign IIC_0_0_sda_o = processing_system7_0_IIC_0_SDA_O;
+  assign IIC_0_0_sda_t = processing_system7_0_IIC_0_SDA_T;
   assign UART0_RX_0_1 = UART0_RX_huella;
   assign UART0_TX_huella = processing_system7_0_UART0_TX;
   assign adelante_0_1 = adelante_0;
-  assign alerta_0[0] = xlslice_0_Dout;
+  assign alerta_0[0] = clockdiv_0_clkout;
   assign axi_gpio_0_GPIO2_TRI_I = bloqueo_tri_i[0];
   assign motorOn_0 = motores_0_motorOn;
+  assign processing_system7_0_IIC_0_SCL_I = IIC_0_0_scl_i;
+  assign processing_system7_0_IIC_0_SDA_I = IIC_0_0_sda_i;
   (* BMM_INFO_ADDRESS_SPACE = "byte  0x40000000 32 > zynq_ejemplo blk_mem_gen_0" *) 
   (* KEEP_HIERARCHY = "yes" *) 
   zynq_ejemplo_axi_bram_ctrl_0_0 axi_bram_ctrl_0
@@ -1332,6 +1357,10 @@ module zynq_ejemplo
         .ena(axi_bram_ctrl_0_BRAM_PORTA_EN),
         .rsta(axi_bram_ctrl_0_BRAM_PORTA_RST),
         .wea(axi_bram_ctrl_0_BRAM_PORTA_WE));
+  zynq_ejemplo_clockdiv_0_0 clockdiv_0
+       (.clkin(processing_system7_0_FCLK_CLK0),
+        .clkout(clockdiv_0_clkout),
+        .enable(xlslice_alerta_0_Dout));
   zynq_ejemplo_motores_0_3 motores_0
        (.adelante(adelante_0_1),
         .clk(processing_system7_0_FCLK_CLK0),
@@ -1366,8 +1395,12 @@ module zynq_ejemplo
         .DDR_WEB(DDR_we_n),
         .FCLK_CLK0(processing_system7_0_FCLK_CLK0),
         .FCLK_RESET0_N(processing_system7_0_FCLK_RESET0_N),
-        .I2C0_SCL_I(1'b0),
-        .I2C0_SDA_I(1'b0),
+        .I2C0_SCL_I(processing_system7_0_IIC_0_SCL_I),
+        .I2C0_SCL_O(processing_system7_0_IIC_0_SCL_O),
+        .I2C0_SCL_T(processing_system7_0_IIC_0_SCL_T),
+        .I2C0_SDA_I(processing_system7_0_IIC_0_SDA_I),
+        .I2C0_SDA_O(processing_system7_0_IIC_0_SDA_O),
+        .I2C0_SDA_T(processing_system7_0_IIC_0_SDA_T),
         .MIO(FIXED_IO_mio[53:0]),
         .M_AXI_GP0_ACLK(processing_system7_0_FCLK_CLK0),
         .M_AXI_GP0_ARADDR(processing_system7_0_M_AXI_GP0_ARADDR),
@@ -1419,7 +1452,7 @@ module zynq_ejemplo
         .Dout(xlslice_2_Dout));
   zynq_ejemplo_xlslice_0_0 xlslice_alerta_0
        (.Din(axi_gpio_0_gpio_io_o),
-        .Dout(xlslice_0_Dout));
+        .Dout(xlslice_alerta_0_Dout));
 endmodule
 
 module zynq_ejemplo_axi_interconnect_0_0

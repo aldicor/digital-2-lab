@@ -1,0 +1,97 @@
+#include "xparameters.h"
+#include "xiicps.h"
+#include "xuartps.h"
+#include "xil_printf.h"
+#include "sleep.h"
+
+#define I2C_DEVICE_ID    XPAR_XIICPS_0_DEVICE_ID
+#define UART_DEVICE_ID   XPAR_XUARTPS_1_DEVICE_ID
+
+#define MPU6050_ADDR     0x68
+#define WHO_AM_I         0x75
+#define PWR_MGMT_1       0x6B
+#define ACCEL_XOUT_H     0x3B
+#define GYRO_XOUT_H      0x43
+
+XIicPs Iic;
+XUartPs Uart;
+
+// Read 16-bit big-endian value from two bytes
+s16 combine_bytes(u8 msb, u8 lsb) {
+    return (s16)((msb << 8) | lsb);
+}
+
+int main() {
+    XIicPs_Config *IicConfig;
+    XUartPs_Config *UartConfig;
+    u8 write_buf[2], read_buf[14];
+    int Status;
+
+    // Initialize UART1
+    UartConfig = XUartPs_LookupConfig(UART_DEVICE_ID);
+    XUartPs_CfgInitialize(&Uart, UartConfig, UartConfig->BaseAddress);
+    XUartPs_SetBaudRate(&Uart, 115200);
+    xil_printf("Starting MPU6050 I2C Sensor Read...\r\n");
+
+    // Initialize I2C0
+    IicConfig = XIicPs_LookupConfig(I2C_DEVICE_ID);
+    XIicPs_CfgInitialize(&Iic, IicConfig, IicConfig->BaseAddress);
+    XIicPs_SetSClk(&Iic, 100000);
+
+    // Wake up MPU6050 (clear sleep bit)
+    write_buf[0] = PWR_MGMT_1;
+    write_buf[1] = 0x00;
+    XIicPs_MasterSendPolled(&Iic, write_buf, 2, MPU6050_ADDR);
+    while (XIicPs_BusIsBusy(&Iic));
+
+    // Check WHO_AM_I
+    write_buf[0] = WHO_AM_I;
+    XIicPs_MasterSendPolled(&Iic, write_buf, 1, MPU6050_ADDR);
+    while (XIicPs_BusIsBusy(&Iic));
+    XIicPs_MasterRecvPolled(&Iic, read_buf, 1, MPU6050_ADDR);
+    while (XIicPs_BusIsBusy(&Iic));
+    xil_printf("WHO_AM_I = 0x%02X\r\n", read_buf[0]);
+
+    while (1) {
+        // Request 14 bytes starting at ACCEL_XOUT_H
+        write_buf[0] = ACCEL_XOUT_H;
+        Status = XIicPs_MasterSendPolled(&Iic, write_buf, 1, MPU6050_ADDR);
+        while (XIicPs_BusIsBusy(&Iic));
+        if (Status != XST_SUCCESS) {
+            xil_printf("Failed to request sensor data\r\n");
+            sleep(5);
+            continue;
+        }
+
+        Status = XIicPs_MasterRecvPolled(&Iic, read_buf, 14, MPU6050_ADDR);
+        while (XIicPs_BusIsBusy(&Iic));
+        if (Status != XST_SUCCESS) {
+            xil_printf("Failed to read sensor data\r\n");
+            sleep(5);
+            continue;
+        }
+
+        // Parse data
+        s16 ax = combine_bytes(read_buf[0], read_buf[1]);
+        s16 ay = combine_bytes(read_buf[2], read_buf[3]);
+        s16 az = combine_bytes(read_buf[4], read_buf[5]);
+        s16 temp = combine_bytes(read_buf[6], read_buf[7]);
+        s16 gx = combine_bytes(read_buf[8], read_buf[9]);
+        s16 gy = combine_bytes(read_buf[10], read_buf[11]);
+        s16 gz = combine_bytes(read_buf[12], read_buf[13]);
+
+        // Convert to units (optional scaling)
+        float accel_scale = 16384.0; // for ±2g
+        float gyro_scale = 131.0;    // for ±250°/s
+
+        xil_printf("\r\nAccel [g]:  X=%.2f  Y=%.2f  Z=%.2f\r\n",
+            ax / accel_scale, ay / accel_scale, az / accel_scale);
+        xil_printf("Gyro  [°/s]: X=%.2f  Y=%.2f  Z=%.2f\r\n",
+            gx / gyro_scale, gy / gyro_scale, gz / gyro_scale);
+        xil_printf("Temp [°C]:  %.2f\r\n", (temp / 340.0) + 36.53);
+
+        sleep(5);
+    }
+
+    return 0;
+}

@@ -2,10 +2,10 @@
 -- Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2023.1 (win64) Build 3865809 Sun May  7 15:05:29 MDT 2023
--- Date        : Sun Jul 20 16:34:58 2025
+-- Date        : Tue Jul 22 10:51:08 2025
 -- Host        : DESKTOP-J5MV1M4 running 64-bit major release  (build 9200)
 -- Command     : write_vhdl -force -mode synth_stub
---               d:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_stub.vhdl
+--               d:/Ing_electronica_unal/7_semestre/digital_electronics_2/digital-2-lab/project/processor_hw/processor_hw.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_axi_bram_ctrl_0_0/zynq_ejemplo_axi_bram_ctrl_0_0_stub.vhdl
 -- Design      : zynq_ejemplo_axi_bram_ctrl_0_0
 -- Purpose     : Stub declaration of top-level module interface
 -- Device      : xc7z010clg400-1

@@ -8,8 +8,10 @@ set_property -dict { PACKAGE_PIN T15   IOSTANDARD LVCMOS33 } [get_ports { UART0_
 
 ##LEDs
 ##Mirar salidas de los motores de manera provisional
-set_property -dict { PACKAGE_PIN M14   IOSTANDARD LVCMOS33 } [get_ports { motorOn_0 }]; #IO_L23P_T3_35 Sch=led[0]
-set_property -dict { PACKAGE_PIN G14   IOSTANDARD LVCMOS33 } [get_ports { alerta_0 }]; #IO_0_35 Sch=led[2]
+set_property -dict { PACKAGE_PIN V12   IOSTANDARD LVCMOS33 } [get_ports { motorOn_0 }]; #IO_L4P_T0_34 Sch=je[1]
+#set_property -dict { PACKAGE_PIN M14   IOSTANDARD LVCMOS33 } [get_ports { motorOn_0 }]; #IO_L23P_T3_35 Sch=led[0]
+set_property -dict { PACKAGE_PIN V15   IOSTANDARD LVCMOS33     } [get_ports { alerta_0 }]; #IO_L10P_T1_34 Sch=jc_p[1]   
+#set_property -dict { PACKAGE_PIN G14   IOSTANDARD LVCMOS33 } [get_ports { alerta_0 }]; #IO_0_35 Sch=led[2]
 
 ##Buttons
 ##Controlar que los motores se muevan
@@ -17,4 +19,9 @@ set_property -dict { PACKAGE_PIN K18   IOSTANDARD LVCMOS33 } [get_ports {adelant
 
 
 ##Switches
-set_property -dict { PACKAGE_PIN G15   IOSTANDARD LVCMOS33 } [get_ports { bloqueo_tri_i}]; #IO_L19N_T3_VREF_35 Sch=sw[0]
+set_property -dict { PACKAGE_PIN Y16   IOSTANDARD LVCMOS33 } [get_ports { bloqueo_tri_i }]; #IO_L7P_T1_34 Sch=btn[3]
+
+##I2C
+set_property -dict { PACKAGE_PIN U14   IOSTANDARD LVCMOS33     } [get_ports { IIC_0_0_scl_io }]; #IO_L11P_T1_SRCC_34 Sch=jd_p[3]            
+set_property -dict { PACKAGE_PIN U15   IOSTANDARD LVCMOS33     } [get_ports { IIC_0_0_sda_io }]; #IO_L11N_T1_SRCC_34 Sch=jd_n[3]
+   

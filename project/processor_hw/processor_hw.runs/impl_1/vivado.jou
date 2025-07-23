@@ -3,12 +3,12 @@
 # SW Build 3865809 on Sun May  7 15:05:29 MDT 2023
 # IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
 # SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
-# Start of session at: Sun Jul 20 18:30:51 2025
-# Process ID: 22336
-# Current directory: D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.runs/impl_1
+# Start of session at: Tue Jul 22 11:08:18 2025
+# Process ID: 39868
+# Current directory: D:/Ing_electronica_unal/7_semestre/digital_electronics_2/digital-2-lab/project/processor_hw/processor_hw.runs/impl_1
 # Command line: vivado.exe -log zynq_ejemplo_wrapper.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source zynq_ejemplo_wrapper.tcl -notrace
-# Log file: D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.runs/impl_1/zynq_ejemplo_wrapper.vdi
-# Journal file: D:/Ing_electronica_unal/7_semestre/digital_electronics_2/project/processor_hw/processor_hw.runs/impl_1\vivado.jou
+# Log file: D:/Ing_electronica_unal/7_semestre/digital_electronics_2/digital-2-lab/project/processor_hw/processor_hw.runs/impl_1/zynq_ejemplo_wrapper.vdi
+# Journal file: D:/Ing_electronica_unal/7_semestre/digital_electronics_2/digital-2-lab/project/processor_hw/processor_hw.runs/impl_1\vivado.jou
 # Running On: DESKTOP-J5MV1M4, OS: Windows, CPU Frequency: 3693 MHz, CPU Physical cores: 8, Host memory: 17107 MB
 #-----------------------------------------------------------
 source zynq_ejemplo_wrapper.tcl -notrace
