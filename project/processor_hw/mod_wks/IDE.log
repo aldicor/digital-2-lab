@@ -1470,3 +1470,5 @@ con
 10:26:20 INFO  : plnx-install-location is set to ''
 10:26:20 INFO  : Successfully done setting workspace for the tool. 
 10:26:42 INFO  : Registering command handlers for Vitis TCF services
+10:26:48 INFO  : Platform repository initialization has completed.
+10:26:55 INFO  : Successfully done query RDI_DATADIR 
