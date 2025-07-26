@@ -27,9 +27,9 @@
       "proc_sys_reset_0": "",
       "processing_system7_0": "",
       "xlslice_alerta_0": "",
-      "xlslice_2": "",
-      "motores_0": "",
-      "clockdiv_0": ""
+      "xlslice_huella_valida": "",
+      "clockdiv_0": "",
+      "motor": ""
     },
     "interface_ports": {
       "DDR": {
@@ -2599,11 +2599,11 @@
           }
         }
       },
-      "xlslice_2": {
+      "xlslice_huella_valida": {
         "vlnv": "xilinx.com:ip:xlslice:1.0",
         "xci_name": "zynq_ejemplo_xlslice_0_2",
         "xci_path": "ip\\zynq_ejemplo_xlslice_0_2\\zynq_ejemplo_xlslice_0_2.xci",
-        "inst_hier_path": "xlslice_2",
+        "inst_hier_path": "xlslice_huella_valida",
         "parameters": {
           "DIN_FROM": {
             "value": "1"
@@ -2613,42 +2613,6 @@
           },
           "DIN_WIDTH": {
             "value": "2"
-          }
-        }
-      },
-      "motores_0": {
-        "vlnv": "xilinx.com:module_ref:motores:1.0",
-        "xci_name": "zynq_ejemplo_motores_0_3",
-        "xci_path": "ip\\zynq_ejemplo_motores_0_3\\zynq_ejemplo_motores_0_3.xci",
-        "inst_hier_path": "motores_0",
-        "reference_info": {
-          "ref_type": "hdl",
-          "ref_name": "motores",
-          "boundary_crc": "0x0"
-        },
-        "ports": {
-          "clk": {
-            "type": "clk",
-            "direction": "I",
-            "parameters": {
-              "FREQ_HZ": {
-                "value": "50000000",
-                "value_src": "user_prop"
-              },
-              "CLK_DOMAIN": {
-                "value": "zynq_ejemplo_processing_system7_0_0_FCLK_CLK0",
-                "value_src": "default_prop"
-              }
-            }
-          },
-          "huella_valida": {
-            "direction": "I"
-          },
-          "adelante": {
-            "direction": "I"
-          },
-          "motorOn": {
-            "direction": "O"
           }
         }
       },
@@ -2682,6 +2646,42 @@
           },
           "enable": {
             "direction": "I"
+          }
+        }
+      },
+      "motor": {
+        "vlnv": "xilinx.com:module_ref:motores:1.0",
+        "xci_name": "zynq_ejemplo_motores_0_3",
+        "xci_path": "ip\\zynq_ejemplo_motores_0_3\\zynq_ejemplo_motores_0_3.xci",
+        "inst_hier_path": "motor",
+        "reference_info": {
+          "ref_type": "hdl",
+          "ref_name": "motores",
+          "boundary_crc": "0x0"
+        },
+        "ports": {
+          "clk": {
+            "type": "clk",
+            "direction": "I",
+            "parameters": {
+              "FREQ_HZ": {
+                "value": "50000000",
+                "value_src": "user_prop"
+              },
+              "CLK_DOMAIN": {
+                "value": "zynq_ejemplo_processing_system7_0_0_FCLK_CLK0",
+                "value_src": "default_prop"
+              }
+            }
+          },
+          "huella_valida": {
+            "direction": "I"
+          },
+          "adelante": {
+            "direction": "I"
+          },
+          "motorOn": {
+            "direction": "O"
           }
         }
       }
@@ -2757,14 +2757,14 @@
       "adelante_0_1": {
         "ports": [
           "adelante_0",
-          "motores_0/adelante"
+          "motor/adelante"
         ]
       },
       "axi_gpio_0_gpio_io_o": {
         "ports": [
           "axi_gpio_0/gpio_io_o",
           "xlslice_alerta_0/Din",
-          "xlslice_2/Din"
+          "xlslice_huella_valida/Din"
         ]
       },
       "clockdiv_0_clkout": {
@@ -2775,7 +2775,7 @@
       },
       "motores_0_motorOn": {
         "ports": [
-          "motores_0/motorOn",
+          "motor/motorOn",
           "motorOn_0"
         ]
       },
@@ -2790,8 +2790,8 @@
           "axi_gpio_0/s_axi_aclk",
           "proc_sys_reset_0/slowest_sync_clk",
           "processing_system7_0/M_AXI_GP0_ACLK",
-          "motores_0/clk",
-          "clockdiv_0/clkin"
+          "clockdiv_0/clkin",
+          "motor/clk"
         ]
       },
       "processing_system7_0_FCLK_RESET0_N": {
@@ -2808,8 +2808,8 @@
       },
       "xlslice_2_Dout": {
         "ports": [
-          "xlslice_2/Dout",
-          "motores_0/huella_valida"
+          "xlslice_huella_valida/Dout",
+          "motor/huella_valida"
         ]
       },
       "xlslice_alerta_0_Dout": {

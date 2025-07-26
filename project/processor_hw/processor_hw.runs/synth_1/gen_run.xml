@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="synth_1" LaunchPart="xc7z010clg400-1" LaunchTime="1753200347" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/zynq_ejemplo_wrapper.dcp">
+<GenRun Id="synth_1" LaunchPart="xc7z010clg400-1" LaunchTime="1753419116" LaunchIncrCheckpoint="$PSRCDIR/utils_1/imports/synth_1/zynq_ejemplo_wrapper.dcp">
   <File Type="PA-TCL" Name="zynq_ejemplo_wrapper.tcl"/>
-  <File Type="RDS-PROPCONSTRS" Name="zynq_ejemplo_wrapper_drc_synth.rpt"/>
   <File Type="REPORTS-TCL" Name="zynq_ejemplo_wrapper_reports.tcl"/>
   <File Type="RDS-RDS" Name="zynq_ejemplo_wrapper.vds"/>
   <File Type="RDS-UTIL" Name="zynq_ejemplo_wrapper_utilization_synth.rpt"/>
   <File Type="RDS-UTIL-PB" Name="zynq_ejemplo_wrapper_utilization_synth.pb"/>
   <File Type="RDS-DCP" Name="zynq_ejemplo_wrapper.dcp"/>
-  <File Type="VDS-TIMINGSUMMARY" Name="zynq_ejemplo_wrapper_timing_summary_synth.rpt"/>
-  <File Type="VDS-TIMING-PB" Name="zynq_ejemplo_wrapper_timing_summary_synth.pb"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
     <Filter Type="Srcs"/>
     <File Path="$PSRCDIR/sources_1/new/motores.v">
@@ -22,6 +19,8 @@
     </File>
     <File Path="$PSRCDIR/sources_1/new/clockdiv.v">
       <FileInfo>
+        <Attr Name="ImportPath" Val="$PSRCDIR/sources_1/new/clockdiv.v"/>
+        <Attr Name="ImportTime" Val="1753418581"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -85,14 +84,14 @@
     <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2023"/>
     <Step Id="synth_design"/>
   </Strategy>
-  <BlockFileSet Type="BlockSrcs" Name="zynq_ejemplo_motores_0_3"/>
   <BlockFileSet Type="BlockSrcs" Name="zynq_ejemplo_xbar_0"/>
   <BlockFileSet Type="BlockSrcs" Name="zynq_ejemplo_axi_bram_ctrl_0_0"/>
-  <BlockFileSet Type="BlockSrcs" Name="zynq_ejemplo_proc_sys_reset_0_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="zynq_ejemplo_processing_system7_0_0"/>
   <BlockFileSet Type="BlockSrcs" Name="zynq_ejemplo_blk_mem_gen_0_0"/>
   <BlockFileSet Type="BlockSrcs" Name="zynq_ejemplo_axi_gpio_0_0"/>
-  <BlockFileSet Type="BlockSrcs" Name="zynq_ejemplo_processing_system7_0_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="zynq_ejemplo_proc_sys_reset_0_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="zynq_ejemplo_clockdiv_0_0"/>
   <BlockFileSet Type="BlockSrcs" Name="zynq_ejemplo_auto_pc_1"/>
   <BlockFileSet Type="BlockSrcs" Name="zynq_ejemplo_auto_pc_0"/>
-  <BlockFileSet Type="BlockSrcs" Name="zynq_ejemplo_clockdiv_0_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="zynq_ejemplo_motores_0_3"/>
 </GenRun>

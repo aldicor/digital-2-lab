@@ -2,7 +2,7 @@
   "schema": "xilinx.com:schema:json_instance:1.0",
   "ip_inst": {
     "xci_name": "zynq_ejemplo_motores_0_3",
-    "cell_name": "motores_0",
+    "cell_name": "motor",
     "component_reference": "xilinx.com:module_ref:motores:1.0",
     "ip_revision": "1",
     "gen_directory": "../../../../../../processor_hw.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_motores_0_3",

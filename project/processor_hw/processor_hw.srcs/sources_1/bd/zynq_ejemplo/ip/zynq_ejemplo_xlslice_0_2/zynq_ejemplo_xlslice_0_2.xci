@@ -2,7 +2,7 @@
   "schema": "xilinx.com:schema:json_instance:1.0",
   "ip_inst": {
     "xci_name": "zynq_ejemplo_xlslice_0_2",
-    "cell_name": "xlslice_2",
+    "cell_name": "xlslice_huella_valida",
     "component_reference": "xilinx.com:ip:xlslice:1.0",
     "ip_revision": "2",
     "gen_directory": "../../../../../../processor_hw.gen/sources_1/bd/zynq_ejemplo/ip/zynq_ejemplo_xlslice_0_2",

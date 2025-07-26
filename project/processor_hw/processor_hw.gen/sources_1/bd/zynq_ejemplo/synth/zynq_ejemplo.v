@@ -2,8 +2,8 @@
 //Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
 //--------------------------------------------------------------------------------
 //Tool Version: Vivado v.2023.1 (win64) Build 3865809 Sun May  7 15:05:29 MDT 2023
-//Date        : Tue Jul 22 10:54:11 2025
-//Host        : DESKTOP-J5MV1M4 running 64-bit major release  (build 9200)
+//Date        : Thu Jul 24 23:51:51 2025
+//Host        : DESKTOP-Q4LM6HA running 64-bit major release  (build 9200)
 //Command     : generate_target zynq_ejemplo.bd
 //Design      : zynq_ejemplo
 //Purpose     : IP block netlist
@@ -1361,7 +1361,7 @@ module zynq_ejemplo
        (.clkin(processing_system7_0_FCLK_CLK0),
         .clkout(clockdiv_0_clkout),
         .enable(xlslice_alerta_0_Dout));
-  zynq_ejemplo_motores_0_3 motores_0
+  zynq_ejemplo_motores_0_3 motor
        (.adelante(adelante_0_1),
         .clk(processing_system7_0_FCLK_CLK0),
         .huella_valida(xlslice_2_Dout),
@@ -1447,12 +1447,12 @@ module zynq_ejemplo
         .UART0_RX(UART0_RX_0_1),
         .UART0_TX(processing_system7_0_UART0_TX),
         .USB0_VBUS_PWRFAULT(1'b0));
-  zynq_ejemplo_xlslice_0_2 xlslice_2
-       (.Din(axi_gpio_0_gpio_io_o),
-        .Dout(xlslice_2_Dout));
   zynq_ejemplo_xlslice_0_0 xlslice_alerta_0
        (.Din(axi_gpio_0_gpio_io_o),
         .Dout(xlslice_alerta_0_Dout));
+  zynq_ejemplo_xlslice_0_2 xlslice_huella_valida
+       (.Din(axi_gpio_0_gpio_io_o),
+        .Dout(xlslice_2_Dout));
 endmodule
 
 module zynq_ejemplo_axi_interconnect_0_0

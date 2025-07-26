@@ -1,0 +1,37 @@
+Nothing to build in platform 'plataforma_mod'
+
+12:06:59 **** Incremental Build of configuration Debug for project mod_app ****
+make all 
+make --no-print-directory pre-build
+a9-linaro-pre-build-step
+' '
+make --no-print-directory main-build
+'Building file: ../src/main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -IC:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/mod_wks/plataforma_mod/export/plataforma_mod/sw/plataforma_mod/standalone_domain/bspinclude/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+../src/main.c: In function 'verificacionHuella':
+../src/main.c:122:88: warning: format '%X' expects a matching 'unsigned int' argument [-Wformat=]
+  122 |             len = snprintf(buf, sizeof(buf), "Funcion Actual: fingerFastSearch => 0x%02X\r\n");
+      |                                                                                     ~~~^
+      |                                                                                        |
+      |                                                                                        unsigned int
+'Finished building: ../src/main.c'
+' '
+'Building target: mod_app.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -LC:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/mod_wks/plataforma_mod/export/plataforma_mod/sw/plataforma_mod/standalone_domain/bsplib/lib -o "mod_app.elf"  ./src/implementacionFuncionesSensor.o ./src/main.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: mod_app.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size mod_app.elf  |tee "mod_app.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+  70103	   2616	  23024	  95743	  175ff	mod_app.elf
+'Finished building: mod_app.elf.size'
+' '
+12:07:02 **** Incremental Build of configuration Debug for project mod_app_system ****
+make all 
+Generating bif file for the system project
+generate_system_bif.bat 52116 C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/mod_wks/plataforma_mod/export/plataforma_mod/plataforma_mod.xpfm standalone_domain C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/mod_wks/mod_app_system/Debug/system.bif
+sdcard_gen --xpfm C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/mod_wks/plataforma_mod/export/plataforma_mod/plataforma_mod.xpfm --sys_config plataforma_mod --bif C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/mod_wks/mod_app_system/Debug/system.bif --bitstream C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/mod_wks/mod_app/_ide/bitstream/zynq_ejemplo_wrapper.bit --elf C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/mod_wks/mod_app/Debug/mod_app.elf,ps7_cortexa9_0
+creating BOOT.BIN using C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/mod_wks/mod_app/_ide/bitstream/zynq_ejemplo_wrapper.bit
+Running D:/Vitis/2023.1/bin/bootgen  -image C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/mod_wks/mod_app_system/Debug/sd_card_temp/boot.bif -w -o i BOOT.BIN

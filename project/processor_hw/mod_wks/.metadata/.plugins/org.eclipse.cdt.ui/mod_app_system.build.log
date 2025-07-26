@@ -1,0 +1,10 @@
+12:07:02 **** Incremental Build of configuration Debug for project mod_app_system ****
+make all 
+Generating bif file for the system project
+generate_system_bif.bat 52116 C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/mod_wks/plataforma_mod/export/plataforma_mod/plataforma_mod.xpfm standalone_domain C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/mod_wks/mod_app_system/Debug/system.bif
+sdcard_gen --xpfm C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/mod_wks/plataforma_mod/export/plataforma_mod/plataforma_mod.xpfm --sys_config plataforma_mod --bif C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/mod_wks/mod_app_system/Debug/system.bif --bitstream C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/mod_wks/mod_app/_ide/bitstream/zynq_ejemplo_wrapper.bit --elf C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/mod_wks/mod_app/Debug/mod_app.elf,ps7_cortexa9_0
+creating BOOT.BIN using C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/mod_wks/mod_app/_ide/bitstream/zynq_ejemplo_wrapper.bit
+Running D:/Vitis/2023.1/bin/bootgen  -image C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/mod_wks/mod_app_system/Debug/sd_card_temp/boot.bif -w -o i BOOT.BIN
+
+12:07:14 Build Finished (took 11s.235ms)
+

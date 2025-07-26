@@ -1,0 +1,268 @@
+#include "funcionesSensor.h"
+#include "xiicps.h"
+#include "xuartps.h"
+#include "xgpio.h"
+#include "xparameters.h"
+#include "xil_printf.h"
+#include "sleep.h"
+#include "xtime_l.h"
+#include <string.h>
+#include <stdio.h>
+#include <math.h>
+
+// --- Configuración del MPU6050 ---
+#define MPU6050_ADDR    0x68
+#define I2C_DEVICE_ID   XPAR_XIICPS_0_DEVICE_ID
+#define ACCEL_SCALE     16384.0f // Factor de escala para convertir a g
+
+XIicPs Iic;
+
+// --- GPIO ---
+#define GPIO_DEVICE_ID      XPAR_AXI_GPIO_0_DEVICE_ID
+#define GPIO_CHANNEL_OUT    1
+#define GPIO_CHANNEL_IN     2
+
+#define MASK_ALERTA         (1 << 0)
+#define MASK_HUELLA_VALIDA  (1 << 1)
+#define MASK_BLOQUEO        (1 << 0)
+
+static Adafruit_Fingerprint finger;
+static XUartPs uart_pc, uart_sensor;
+static XGpio Gpio;
+
+static char buf[128];
+static int len;
+static u32 estado_gpio = 0;
+int alerta = 0;
+int bloqueado = 0;
+int huella_valida;
+
+// Inicializa UART para comunicación con consola (PC)
+int init_uart_pc() {
+    XUartPs_Config *cfg = XUartPs_LookupConfig(XPAR_XUARTPS_1_DEVICE_ID);
+    if (!cfg) return XST_FAILURE;
+    return XUartPs_CfgInitialize(&uart_pc, cfg, cfg->BaseAddress);
+}
+
+// Inicializa I2C para comunicación con MPU6050
+int init_i2c() {
+    XIicPs_Config *cfg = XIicPs_LookupConfig(I2C_DEVICE_ID);
+    if (!cfg) return XST_FAILURE;
+    int status = XIicPs_CfgInitialize(&Iic, cfg, cfg->BaseAddress);
+    if (status != XST_SUCCESS) return XST_FAILURE;
+    XIicPs_SetSClk(&Iic, 100000); // 100 kHz estándar
+    return XST_SUCCESS;
+}
+
+// Configura registros básicos del MPU6050 (despierta y setea escala)
+int mpu6050_init() {
+    u8 data[2];
+
+    data[0] = 0x6B; data[1] = 0x00; // Wake up
+    if (XIicPs_MasterSendPolled(&Iic, data, 2, MPU6050_ADDR) != XST_SUCCESS) return XST_FAILURE;
+    usleep(1000);
+
+    data[0] = 0x1C; data[1] = 0x00; // ±2g
+    if (XIicPs_MasterSendPolled(&Iic, data, 2, MPU6050_ADDR) != XST_SUCCESS) return XST_FAILURE;
+    usleep(1000);
+
+    return XST_SUCCESS;
+}
+
+// Lee las 3 componentes del acelerómetro (bruto en 16 bits)
+int mpu6050_read_accel_all(int16_t *x, int16_t *y) {
+    u8 reg = 0x3B;
+    u8 buffer[6];
+
+    if (XIicPs_MasterSendPolled(&Iic, &reg, 1, MPU6050_ADDR) != XST_SUCCESS) return XST_FAILURE;
+    usleep(1000);
+    if (XIicPs_MasterRecvPolled(&Iic, buffer, 6, MPU6050_ADDR) != XST_SUCCESS) return XST_FAILURE;
+
+    *x = (buffer[0] << 8) | buffer[1];
+    *y = (buffer[2] << 8) | buffer[3];
+
+    return XST_SUCCESS;
+}
+
+// Setea o limpia un bit específico en el GPIO de salida
+void setGpioBit(u32 mask, int state) {
+    if (state)
+        estado_gpio |= mask;
+    else
+        estado_gpio &= ~mask;
+
+    XGpio_DiscreteWrite(&Gpio, GPIO_CHANNEL_OUT, estado_gpio);
+}
+
+// Devuelve segundos desde arranque (basado en XTime)
+u32 seconds() {
+    XTime t;
+    XTime_GetTime(&t);
+    return (u32)(t / (COUNTS_PER_SECOND));
+}
+
+// Rutina de alarma: enciende la alerta por 10s o hasta que se bloquee manualmente
+int alarma_activada(void) {
+    u32 t0 = seconds();
+    u32 t_aux = t0;
+
+    while (t_aux < t0 + 10) {
+        t_aux = seconds();
+        alerta = 1;
+        setGpioBit(MASK_ALERTA, alerta);
+
+        bloqueado = (XGpio_DiscreteRead(&Gpio, GPIO_CHANNEL_IN) & MASK_BLOQUEO) ? 1 : 0;
+        if (bloqueado) break;
+    }
+
+    alerta = 0;
+    setGpioBit(MASK_ALERTA, alerta);
+
+    return 0;
+}
+
+// Proceso de verificación de huella con 5 intentos antes de activar alarma
+int verificacionHuella(void) {
+    static int tries = 0;
+    uint8_t res = getImage(&finger);
+
+    len = snprintf(buf, sizeof(buf), "Funcion Actual: getImage \r \n", res);
+    XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+
+    if (res == FINGERPRINT_NOFINGER) {
+        XUartPs_Send(&uart_pc, (uint8_t*)"No se detecta huella en el sensor. Por favor, coloque correctamente el dedo. [Código 0x02]\r\n", 21);
+    } else if (res == FINGERPRINT_OK) {
+        XUartPs_Send(&uart_pc, (uint8_t*)"Imagen OK\r\n", 11);
+
+        res = genChar(&finger, 1);
+        len = snprintf(buf, sizeof(buf), "Funcion Actual: genChar() ", res);
+        XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+
+        if (res == FINGERPRINT_OK) {
+            res = fingerFastSearch(&finger, 1, 0, 300);
+            len = snprintf(buf, sizeof(buf), "Funcion Actual: ", res);
+            XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+
+            if (res == FINGERPRINT_OK) {
+                len = snprintf(buf, sizeof(buf), "Huella reconocida. Acceso autorizado. [Código 0x00] %d\r\n");
+                XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+                len = snprintf(buf, sizeof(buf), "Control del vehículo habilitado. Puede operar el motor. [Código 0x00] %d\r\n");
+				XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+                return 1;
+            } else {
+                tries++;
+                XUartPs_Send(&uart_pc, (uint8_t*)"Huella no encontrada\r\n", 23);
+                if (tries >= 5) {
+                    XUartPs_Send(&uart_pc, (uint8_t*)"Alarma activada \r\n", 18);
+                    tries = 0;
+                    alarma_activada();
+                    return 0;
+                }
+            }
+        }
+    }
+    return 0;
+}
+
+int main(void) {
+    int16_t ax, ay, az;
+
+    if (init_uart_pc() != XST_SUCCESS) return -1;
+
+    XUartPs_Config *cfg = XUartPs_LookupConfig(XPAR_XUARTPS_0_DEVICE_ID);
+    XUartPs_CfgInitialize(&uart_sensor, cfg, cfg->BaseAddress);
+    XUartPs_SetBaudRate(&uart_sensor, 57600);
+
+    Adafruit_Fingerprint_init(&finger, &uart_sensor);
+
+    if (init_i2c() != XST_SUCCESS) {
+        xil_printf("Fallo al inicializarI2C \r\n");
+        return -1;
+    }
+
+    if (mpu6050_init() != XST_SUCCESS) {
+        xil_printf("Fallo al inicializar MPU6050 \r\n");
+        return -1;
+    }
+
+    XGpio_Initialize(&Gpio, GPIO_DEVICE_ID);
+    XGpio_SetDataDirection(&Gpio, GPIO_CHANNEL_OUT, 0);
+    XGpio_SetDataDirection(&Gpio, GPIO_CHANNEL_IN, 1);
+
+    len = snprintf(buf, sizeof(buf), "Sistema listo. Esperando huella \r\n");
+    XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+
+    // Calibración inicial del acelerómetro
+    const int samples = 100;
+    int32_t sum_x = 0, sum_y = 0;
+
+    for (int i = 0; i < samples; i++) {
+        if (mpu6050_read_accel_all(&ax, &ay) == XST_SUCCESS) {
+            sum_x += ax;
+            sum_y += ay;
+        }
+        usleep(5000);
+    }
+
+    int16_t offset_x = sum_x / samples;
+    int16_t offset_y = sum_y / samples;
+
+    int bloqueado_anterior = 0;
+
+    while (1) {
+        int bloqueado_actual = (XGpio_DiscreteRead(&Gpio, GPIO_CHANNEL_IN) & MASK_BLOQUEO) ? 1 : 0;
+        //Configuracion sonido de alarma
+        if (!bloqueado_anterior && bloqueado_actual) {
+            alerta = 1;
+            setGpioBit(MASK_ALERTA, alerta);
+            usleep(50000);
+
+            alerta = 0;
+            setGpioBit(MASK_ALERTA, alerta);
+            usleep(200000);
+
+            alerta = 1;
+            setGpioBit(MASK_ALERTA, alerta);
+            usleep(50000);
+
+            alerta = 0;
+            setGpioBit(MASK_ALERTA, alerta);
+        }
+
+        bloqueado = bloqueado_actual;
+        bloqueado_anterior = bloqueado_actual;
+
+        if (!huella_valida) {
+            huella_valida = verificacionHuella();
+
+            // Solo verifica movimiento si no hay huella válida
+            if (mpu6050_read_accel_all(&ax, &ay) == XST_SUCCESS) {
+                float ax_g = (ax - offset_x) / ACCEL_SCALE * 9.81f;
+                float ay_g = (ay - offset_y) / ACCEL_SCALE * 9.81f;
+
+                snprintf(buf, sizeof(buf), "Ax: %.2f g, Ay: %.2f g\r\n", ax_g, ay_g);
+                XUartPs_Send(&uart_pc, (uint8_t*)buf, strlen(buf));
+
+                if (fabsf(ax_g) > 0.9f || fabsf(ay_g) > 0.9f) {
+                    alarma_activada();
+                }
+            }
+        } else {
+            // Mantener estado de huella válida hasta que se presione el botón de bloqueo
+            if (bloqueado) {
+            	if(huella_valida){
+            		len = snprintf(buf, sizeof(buf), "Vehículo bloqueado. Por favor, coloque su huella nuevamente para volver a activar el acceso.%d\r\n");
+					XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
+            	}
+                huella_valida = 0;
+            } else {
+                huella_valida = 1;
+            }
+        }
+
+        setGpioBit(MASK_ALERTA, alerta);
+        setGpioBit(MASK_HUELLA_VALIDA, huella_valida);
+
+        usleep(200000); // Ritmo de actualización (200 ms)
+    }
+}

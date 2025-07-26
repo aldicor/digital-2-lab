@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<sdkproject:SdkProject xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sdkproject="http://www.xilinx.com/sdkproject" name="mod_app" location="C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/mod_wks/mod_app" platform="C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/mod_wks/plataforma_mod/export/plataforma_mod/plataforma_mod.xpfm" platformUID="xilinx:zybo-z7-10::0.0(custom)" systemProject="mod_app_system" sysConfig="plataforma_mod" runtime="C/C++" cpu="standalone_domain" cpuInstance="ps7_cortexa9_0" os="standalone" mssSignature="e1b1c2f96683c2083fda587c8efead80">
+  <configuration name="Debug" id="xilinx.gnu.armv7.exe.debug.145994154">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+    <lastBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <configuration name="Release" id="xilinx.gnu.armv7.exe.release.1682412379" dirty="true">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <template appTemplateName="hello_world"/>
+</sdkproject:SdkProject>

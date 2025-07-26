@@ -1,0 +1,25 @@
+#-----------------------------------------------------------
+# Vivado v2023.1 (64-bit)
+# SW Build 3865809 on Sun May  7 15:05:29 MDT 2023
+# IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+# SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+# Start of session at: Thu Jul 24 23:45:19 2025
+# Process ID: 19244
+# Current directory: C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent4048 C:\Users\Usuario\Desktop\modificaciones\digital-2-lab\project\processor_hw\processor_hw.xpr
+# Log file: C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/vivado.log
+# Journal file: C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw\vivado.jou
+# Running On: DESKTOP-Q4LM6HA, OS: Windows, CPU Frequency: 1498 MHz, CPU Physical cores: 4, Host memory: 12670 MB
+#-----------------------------------------------------------
+start_gui
+open_project C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/processor_hw/processor_hw.xpr
+update_compile_order -fileset sources_1
+save_project_as modificacion C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/modificacion -force
+open_bd_design {C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/modificacion/modificacion.srcs/sources_1/bd/zynq_ejemplo/zynq_ejemplo.bd}
+set_property name xlslice_huella_valida [get_bd_cells xlslice_2]
+set_property name motor [get_bd_cells motores_0]
+update_module_reference zynq_ejemplo_motores_0_3
+reset_run synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 8
+wait_on_run impl_1
+write_hw_platform -fixed -include_bit -force -file C:/Users/Usuario/Desktop/modificaciones/digital-2-lab/project/modificacion/zynq_ejemplo_wrapper.xsa
