@@ -37,7 +37,7 @@ static u32 estado_gpio = 0;
 int alerta = 0;
 int bloqueado = 0;
 int huella_valida;
-
+int tries = 0;
 // --- Inicialización UART para consola ---
 int init_uart_pc() {
     XUartPs_Config *cfg = XUartPs_LookupConfig(XPAR_XUARTPS_1_DEVICE_ID);
@@ -107,23 +107,22 @@ int alarma_activada(void) {
 }
 
 int verificacionHuella(void) {
-    static int tries = 0;
     uint8_t res = getImage(&finger);
-    len = snprintf(buf, sizeof(buf), "getImage() => 0x%02X\r\n", res);
+    len = snprintf(buf, sizeof(buf), "Funcion Actual: getImage\r\n");
     XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
     if (res == FINGERPRINT_NOFINGER) {
-        XUartPs_Send(&uart_pc, (uint8_t*)"Coloque el dedo...\r\n", 21);
+        XUartPs_Send(&uart_pc, (uint8_t*)"No se detecta huella en el sensor. ...\r\n\n", 21);
     } else if (res == FINGERPRINT_OK) {
-        XUartPs_Send(&uart_pc, (uint8_t*)"Imagen OK\r\n", 11);
+        XUartPs_Send(&uart_pc, (uint8_t*)"Huella detectada\r\n", 20);
         res = genChar(&finger, 1);
-        len = snprintf(buf, sizeof(buf), "genChar() => 0x%02X\r\n", res);
+        len = snprintf(buf, sizeof(buf), "Convirtiendo en una plantilla \r\n");
         XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
         if (res == FINGERPRINT_OK) {
             res = fingerFastSearch(&finger, 1, 0, 300);
-            len = snprintf(buf, sizeof(buf), "fingerFastSearch() => 0x%02X\r\n", res);
+            len = snprintf(buf, sizeof(buf), "Funcion Actual: fingerFastSearch => 0x%02X\r\n");
             XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
             if (res == FINGERPRINT_OK) {
-                len = snprintf(buf, sizeof(buf), "Huella encontrada! %d\r\n", finger.fingerID);
+                len = snprintf(buf, sizeof(buf), "¡Huella encontrada! \r\n");
                 XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
                 return 1;
             } else {
@@ -151,12 +150,12 @@ int main(void) {
     Adafruit_Fingerprint_init(&finger, &uart_sensor);
 
     if (init_i2c() != XST_SUCCESS) {
-        xil_printf("I2C init failed\r\n");
+        xil_printf("Inicialización del I2C fallida \r\n");
         return -1;
     }
 
     if (mpu6050_init() != XST_SUCCESS) {
-        xil_printf("MPU6050 init failed\r\n");
+        xil_printf("Inicialización del MPU6050 fallida \r\n");
         return -1;
     }
 
@@ -168,20 +167,18 @@ int main(void) {
     XUartPs_Send(&uart_pc, (uint8_t*)buf, len);
 
     const int samples = 100;
-    int32_t sum_x = 0, sum_y = 0, sum_z = 0;
+    int32_t sum_x = 0, sum_y = 0;
 
     for (int i = 0; i < samples; i++) {
         if (mpu6050_read_accel_all(&ax, &ay, &az) == XST_SUCCESS) {
             sum_x += ax;
             sum_y += ay;
-            sum_z += az;
         }
         usleep(5000);
     }
 
     int16_t offset_x = sum_x / samples;
     int16_t offset_y = sum_y / samples;
-    int16_t offset_z = sum_z / samples;
 
     int bloqueado_anterior = 0;
 
@@ -219,9 +216,8 @@ int main(void) {
             if (mpu6050_read_accel_all(&ax, &ay, &az) == XST_SUCCESS) {
                 float ax_g = (ax - offset_x) / ACCEL_SCALE * 9.81f;
                 float ay_g = (ay - offset_y) / ACCEL_SCALE * 9.81f;
-                float az_g = (az - offset_z) / ACCEL_SCALE * 9.81f;
 
-                snprintf(buf, sizeof(buf), "Ax: %.2f g, Ay: %.2f g, Az: %.2f g\r\n", ax_g, ay_g, az_g);
+                snprintf(buf, sizeof(buf), "Ax: %.2f g, Ay: %.2f g\r\n", ax_g, ay_g);
                 XUartPs_Send(&uart_pc, (uint8_t*)buf, strlen(buf));
 
                 if (fabsf(ax_g) > 0.9f || fabsf(ay_g) > 0.9f) {
